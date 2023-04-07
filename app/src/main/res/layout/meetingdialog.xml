@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_weight="1"
+
+        android:text=""
+        android:hint="Write a message for associate"
+        android:inputType="textImeMultiLine"
+        android:gravity="top"
+        android:maxLines="5"
+        android:padding="5dp"
+        android:background="@drawable/edittextbcg"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:id="@+id/message"/>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/message"
+        android:layout_margin="15dp"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:id="@+id/okay_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+         android:layout_alignParentStart="true"
+            android:text="Okay"
+            android:textStyle="bold"
+            android:textColor="#3F51B5"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/cancel_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="100dp"
+            android:layout_toRightOf="@id/okay_text"
+            android:text="Cancel"
+            android:textAlignment="viewEnd"
+            android:textStyle="bold"
+            android:textColor="#FF0000"
+            android:textSize="30sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
