@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_myAccount"
+            android:icon="@drawable/home"
+            android:title="@string/menu_myAccount" />
+
+        <item
+            android:id="@+id/nav_services"
+            android:icon="@drawable/services"
+            android:title="Send Service Request" />
+        <item
+            android:id="@+id/nav_service_request"
+            android:title="My Service Request"
+            android:icon="@drawable/service_desk_svgrepo_com"/>
+        <item android:id="@+id/nav_offer"
+            android:title="My Offer"
+            android:icon="@drawable/offer_svgrepo_com"/>
+        <item
+            android:id="@+id/nav_myOrder"
+            android:icon="@drawable/my_order"
+            android:title="@string/menu_MyOrder" />
+
+        <item
+            android:visible="false"
+            android:id="@+id/nav_billing"
+            android:icon="@drawable/easy_cash"
+            android:title="@string/menu_mybilling" />
+<!--
+        <item
+            android:id="@+id/nav_network"
+            android:icon="@drawable/my_network"
+            android:title="@string/my_network" />
+        <item
+            android:id="@+id/nav_wallet"
+            android:icon="@drawable/refer_earn"
+            android:title="@string/easy_money" />
+        <item
+            android:id="@+id/nav_easy_money"
+            android:icon="@drawable/easy_cash"
+            android:title="@string/easy_cash" />-->
+
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/profile"
+            android:title="@string/menu_profile" />
+     <!--
+        <item
+            android:id="@+id/nav_refer"
+            android:icon="@drawable/easy_money"
+            android:title="@string/refer" />-->
+
+        <item
+            android:id="@+id/nav_associate"
+            android:icon="@drawable/associate"
+            android:title="@string/associate" />
+
+        <item
+            android:id="@+id/nav_update"
+            android:icon="@drawable/update"
+            android:title="@string/update" />
+
+        <item
+            android:visible="false"
+            android:id="@+id/nav_changePassword"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/change_password" />
+
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/signout"
+            android:title="@string/logout" />
+    </group>
+
+
+</menu>

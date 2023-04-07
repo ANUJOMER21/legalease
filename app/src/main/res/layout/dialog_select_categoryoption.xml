@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:layout_gravity="center"
+    app:cardCornerRadius="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose Category"
+            android:textColor="@color/black_hard"
+            android:textStyle="bold"
+            android:textSize="21sp"
+            android:padding="10dp"
+            />
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/black_hard" />
+        <TextView
+            android:id="@+id/tv_saleSelector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sales"
+            android:textColor="@color/black_hard"
+            android:textSize="19sp"
+            android:padding="10dp"
+            />
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/black_80" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Expenses"
+            android:id="@+id/tv_expensesSelector"
+            android:textColor="@color/black_hard"
+            android:textSize="19sp"
+            android:padding="10dp"
+            />
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/black_80" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Others"
+            android:id="@+id/tv_otherSelector"
+            android:textColor="@color/black_hard"
+            android:textSize="19sp"
+            android:padding="10dp"
+            />
+
+
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

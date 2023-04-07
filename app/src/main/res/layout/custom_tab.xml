@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@android:id/text1"
+    android:layout_width="match_parent"
+    android:textSize="25sp"
+    android:padding="5dp"
+    android:textColor="@color/white"
+    android:gravity="center"
+    android:background="@drawable/item_account_background"
+    android:layout_height="wrap_content"
+    />

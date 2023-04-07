@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:background="@drawable/order_back"
+        android:elevation="2dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="220dp">
+        <ProgressBar
+            android:elevation="5dp"
+            android:layout_centerInParent="true"
+            android:id="@+id/progressBar"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            />
+        <TextView
+            android:id="@+id/tv_credit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Easy Money"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:padding="7dp"/>
+
+
+
+            <TextView
+                android:layout_below="@+id/tv_credit"
+                android:id="@+id/tv_walletPoint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="50sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@color/white"
+                />
+    </RelativeLayout>
+
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        app:cardCornerRadius="7dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="55dp"
+            android:paddingBottom="55dp"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:background="@color/black"
+            android:textColor="@color/white"
+            android:text="It's seems like you haven't use any of our services."/>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>

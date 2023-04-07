@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="10dp"
+    app:cardElevation="2dp"
+    app:cardCornerRadius="2dp">
+    <RelativeLayout
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/relative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_alignParentLeft="true"
+                android:textSize="13sp"
+                android:id="@+id/title"
+                android:paddingTop="8dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:textStyle="bold"
+                android:layout_toLeftOf="@+id/relative1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <RelativeLayout
+                android:id="@+id/relative1"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:visibility="gone"
+                    android:id="@+id/image_hide"
+                    android:padding="7dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_hide"
+                    />
+                <ImageView
+                    android:id="@+id/image_expand"
+                    android:padding="7dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_expand"
+                   />
+            </RelativeLayout>
+        </RelativeLayout>
+        <TextView
+            android:visibility="gone"
+            android:textSize="15sp"
+            android:layout_below="@+id/relative"
+            android:id="@+id/contentm"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="8dp"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+
+        <TextView
+            android:textSize="15sp"
+            android:layout_below="@+id/relative"
+            android:id="@+id/content"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:maxLines="3"
+            android:paddingRight="8dp"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

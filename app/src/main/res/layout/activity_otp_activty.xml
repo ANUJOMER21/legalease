@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OtpActivty">
+
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@drawable/registraion_backimage"/>
+
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_marginTop="70dp"
+        android:layout_below="@+id/iv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="AUTHENTICATION CODE PLEASE"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="ENTER SMS CODE BELOW"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="14sp"/>
+
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_below="@+id/linear"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+        <EditText
+            android:id="@+id/et1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLength="1"
+            android:gravity="center"
+            android:background="@drawable/edit_text_background"
+            android:textColor="@color/black"
+            android:layout_marginRight="10dp"
+            android:textSize="20sp"/>
+
+        <EditText
+            android:id="@+id/et2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLength="1"
+            android:gravity="center"
+            android:background="@drawable/edit_text_background"
+            android:textColor="@color/black"
+            android:layout_marginRight="10dp"
+            android:imeOptions="actionPrevious"
+            android:textSize="20sp"/>
+
+        <EditText
+            android:id="@+id/et3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLength="1"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:background="@drawable/edit_text_background"
+            android:layout_marginRight="10dp"
+            android:imeOptions="actionPrevious"
+            android:textSize="20sp"/>
+
+        <EditText
+            android:id="@+id/et4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:background="@drawable/edit_text_background"
+            android:maxLength="1"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:layout_marginRight="10dp"
+            android:imeOptions="actionPrevious"
+            android:textSize="20sp"/>
+
+
+    </LinearLayout>
+
+    <Button
+        android:layout_alignParentBottom="true"
+        android:id="@+id/verify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:textSize="21sp"
+        android:text="VERIFY OTP"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+</RelativeLayout>

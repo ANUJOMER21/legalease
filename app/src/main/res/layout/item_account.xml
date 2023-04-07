@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="120dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="@null"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <TextView
+        android:layout_gravity="center"
+        android:background="@drawable/item_account_background"
+        android:text="nvcvcjhcjh"
+        android:id="@+id/account_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/service_image"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:gravity="center"/>
+</LinearLayout>

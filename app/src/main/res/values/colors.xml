@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#773701</color>
+
+
+
+    <color name="black">#000000</color>
+    <color name="black_80">#80000000</color>
+
+    <color name="edittext_background">#D5DAE2</color>
+
+    <color name="white">#ffffff</color>
+    <color name="white_light">#50ffffff</color>
+
+    <color name="white_fade">#60ffffff</color>
+
+    <color name="dark_red">#530303</color>
+    <color name="login_textcolor">#95a0a6</color>
+    <color name="dark_yellow">#e1b64f</color>
+    <color name="blue">#007bff</color>
+    <color name="red_incorrect">#dc3545</color>
+    <color name="dark_blue">#f8116389</color>
+    <color name="lightdark_blue">#50116389</color>
+    <color name="extradark_blue">#f8116389</color>
+
+
+    <color name="resend_background">#7c5ac2</color>
+    <color name="dark_orange">#90c66f0d</color>
+    <color name="try_color">#F4511E</color>
+    <color name="splash_text_color">#ab6fac</color>
+    <color name="colorOrange">#e9ac3c</color>
+    <color name="color_et">#F6F7F7</color>
+    <color name="light_green">#66d45a</color>
+    <color name="green">#28a745</color>
+    <color name="lightbrown">#736f6f</color>
+    <color name="bottomsheetbackground">#f2f2f2</color>
+    <color name="edittext_bottomsheetbackground">#f2f0f0</color>
+    <color name="floating_black">#80000000</color>
+    <color name="blackbottom">#10000000</color>
+    <color name="black_hard">#362626</color>
+    <color name="red">#fc3d3d</color>
+    <color name="redlight">#C4FC3D3D</color>
+
+    <color name="rgyan_base_color">#ff9900</color>
+    <color name="rgyan_base_colorlight">#D66C0B</color>
+    <color name="registration_back">#38ccb8ca</color>
+    <color name="colorGray">#736f6f</color>
+    <color name="colorGrayAlpha80">#80736f6f</color>
+    <color name="yellow_light">#C77830</color>
+    <color name="backgroundcolor">#F17070</color>
+    <color name="user_name_color">#FF2F2333</color>
+    <color name="user_status_color">#4E4D4E</color>
+    <color name="hash_tag_color">#f8116389</color>
+    <color name="anonymous_text_green">#117014</color>
+    <color name="tabScrollcolor">#995d02</color>
+    <color name="black_sixty">#80000000</color>
+    <color name="black_thirty">#50000000</color>
+    <color name="black_twenty">#20000000</color>
+    <color name="card_background">#10F5EFEF</color>
+    <color name="registraion_button_back">#bb5900</color>
+
+
+
+    <color name="background_dark">#ffb8860b</color>
+    <color name="background_light">#ffd2b48c</color>
+    <color name="transparent">#00b8860b</color>
+    <color name="color_text_dashbored">#161616</color>
+    <color name="color_background_category">#50f0f0f0</color>
+    <color name="color_blue">#0336ff</color>
+    <color name="registrationbutton_background">#5F6ECE</color>
+    <color name="color_dashbored_background">#D7F5F4F2</color>
+    <color name="refer_back_color">#001f45</color>
+
+
+
+</resources>

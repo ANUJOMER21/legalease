@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MakeNoteActivity">
+    <RelativeLayout
+        android:id="@+id/relative"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <ImageView
+            android:layout_alignParentLeft="true"
+            android:id="@+id/back"
+            android:padding="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/back_white"/>
+
+        <TextView
+            android:layout_toRightOf="@+id/back"
+            android:id="@+id/clientName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:padding="2dp"
+            android:textSize="17sp"
+            android:layout_gravity="center"/>
+
+
+        <Button
+            android:elevation="5dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/background2"
+            android:id="@+id/btn_save"
+            android:text="Save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+
+
+    <EditText
+        android:id="@+id/et_noteTitle"
+        android:elevation="5dp"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:textSize="17sp"
+        android:padding="5dp"
+        android:hint="Title for your note..."
+        android:background="@color/color_et"
+        android:textStyle="bold"
+        android:textColor="@color/black_hard"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black_twenty" />
+
+    <EditText
+        android:id="@+id/et_note"
+        android:elevation="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:textSize="16sp"
+        android:padding="5dp"
+        android:hint="Your note..."
+        android:background="@color/color_et"
+        android:textColor="@color/black" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/rgyan_base_colorlight" />
+
+    <TextView
+        android:id="@+id/tv_headingNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="My Previous Notes"
+        android:textStyle="bold"
+        android:textColor="@color/rgyan_base_color"
+        android:padding="10dp"
+        android:textSize="15sp"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:padding="10dp"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_myNotes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            ></androidx.recyclerview.widget.RecyclerView>
+
+        <ProgressBar
+
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/progressBar"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+</LinearLayout>

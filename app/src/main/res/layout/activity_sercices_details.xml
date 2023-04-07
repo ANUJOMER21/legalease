@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ServicesDetails">
+
+    <RelativeLayout
+        android:id="@+id/relative"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <ImageView
+            android:layout_alignParentLeft="true"
+            android:id="@+id/back"
+            android:padding="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/back_white"/>
+
+        <TextView
+            android:layout_toRightOf="@+id/back"
+            android:id="@+id/serviceTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:padding="2dp"
+            android:textSize="17sp"
+            android:layout_gravity="center"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_below="@+id/relative"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:background="@drawable/fragment_home_background"/>
+
+
+
+    <com.google.android.material.tabs.TabLayout
+        android:layout_below="@+id/relative"
+        android:id="@+id/serviceFragmnttabs"
+        app:tabIndicatorHeight="1dp"
+        app:tabIndicatorColor="@color/tabScrollcolor"
+        app:tabTextAppearance="@style/MineCustomTabText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabMode="scrollable"
+        />
+
+    <androidx.viewpager.widget.ViewPager
+        android:paddingBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/serviceFragmnttabs"
+        android:id="@+id/viewpagerServiceFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_getStarted">
+    </androidx.viewpager.widget.ViewPager>
+
+    <Button
+        android:id="@+id/btn_getStarted"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:text="Next Step"
+        android:textSize="20sp"
+        android:textColor="@color/white"/>
+
+</RelativeLayout>

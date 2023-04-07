@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingTop="50dp"
+    android:layout_centerInParent="true"
+    android:paddingRight="40dp"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_alignParentTop="true"
+        android:id="@+id/imageView"
+        android:layout_width="120dp"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="3dp"
+        android:src="@drawable/navigation_back"
+        android:elevation="2dp"
+        android:layout_height="120dp"
+        android:contentDescription="@string/nav_header_desc"
+         />
+
+
+
+    <TextView
+        android:layout_below="@+id/imageView"
+        android:textStyle="bold"
+        android:id="@+id/loggedInUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:gravity="center"
+        android:textSize="21sp"
+        android:textColor="@color/white"
+        android:text="@string/nav_header_title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+    <TextView
+        android:layout_below="@+id/loggedInUserName"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:id="@+id/loggedInUserEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nav_header_subtitle" />
+
+</RelativeLayout>
+
+
+
+<!--<android.support.v7.widget.CardView-->
+<!--android:id="@+id/card"-->
+<!--android:visibility="gone"-->
+<!--app:cardElevation="1dp"-->
+<!--app:cardCornerRadius="3dp"-->
+<!--android:layout_below="@+id/imageView"-->
+<!--android:layout_alignParentRight="true"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content">-->
+
+<!--<TextView-->
+<!--    android:textColor="@color/colorPrimaryDark"-->
+<!--    android:textStyle="bold"-->
+<!--    android:text="Edit"-->
+<!--    android:textSize="18sp"-->
+<!--    android:paddingTop="5dp"-->
+<!--    android:paddingBottom="5dp"-->
+<!--    android:paddingLeft="15dp"-->
+<!--    android:paddingRight="15dp"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content" />-->
+<!--</android.support.v7.widget.CardView>-->

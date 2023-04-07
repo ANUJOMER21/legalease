@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="anim_duration_medium">40</integer>
+    <integer name="anim_duration_long">11</integer>
+    <integer name="anim_duration_count">5</integer>
+
+</resources>

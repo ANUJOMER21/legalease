@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="280dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/order_back"
+    android:orientation="vertical">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_hint"
+                    android:textSize="20sp"
+                    android:layout_marginTop="45dp"
+                    android:textColor="@color/color_et"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Order No."/>
+                <TextView
+                    android:id="@+id/tv_order"
+                    android:textSize="50sp"
+                    android:text="chchgchg"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    />
+
+                <View
+                    android:layout_width="130dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@color/white"
+                    />
+
+
+                <TextView
+                    android:paddingLeft="17dp"
+                    android:textSize="40sp"
+                    android:text="fadsvjds sjf"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_company"/>
+        </LinearLayout>
+
+
+
+        <Button
+            android:layout_alignParentBottom="true"
+            android:id="@+id/view_order"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/view_order_background"
+            android:text="View Order"
+            android:textColor="@color/black"
+            android:paddingLeft="60dp"
+            android:paddingRight="60dp"
+            android:layout_marginBottom="25dp"
+            android:textSize="17sp"/>
+    </RelativeLayout>
+
+
