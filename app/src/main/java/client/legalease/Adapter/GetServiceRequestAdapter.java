@@ -24,6 +24,7 @@ import client.legalease.Model.customerRequestListModel.Datum;
 import client.legalease.R;
 import client.legalease.ServiceOfferDetail;
 import client.legalease.ServiceRequestDetail;
+import client.legalease.Status;
 
 public class GetServiceRequestAdapter extends RecyclerView.Adapter<GetServiceRequestAdapter.ViewHolder> {
       Context context;
@@ -45,7 +46,7 @@ public class GetServiceRequestAdapter extends RecyclerView.Adapter<GetServiceReq
 
     @Override
     public void onBindViewHolder(@NonNull GetServiceRequestAdapter.ViewHolder viewHolder, int i) {
-        String name="",date="";
+        String name="",date="",stat;
         try {
 
 
@@ -53,9 +54,10 @@ if(list.get(i).getAssoicate()!=null) {
     name = list.get(i).getAssoicate().getName();
     Date date1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(list.get(i).getCreatedAt());
     date = new SimpleDateFormat("dd-MM-yyyy").format(date1);
-
+stat=new Status().getStatus(list.get(i).getStatus());
     viewHolder.name1.setText(name);
     viewHolder.date1.setText(date);
+    viewHolder.status.setText(stat);
 }
 
     }catch (NullPointerException e){
@@ -73,13 +75,14 @@ if(list.get(i).getAssoicate()!=null) {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView name1,date1;
+        TextView name1,date1,status;
         CardView cardView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name1=itemView.findViewById(R.id.partner_name);
             date1=itemView.findViewById(R.id.tv_date);
             cardView=itemView.findViewById(R.id.servicerequestcv);
+            status=itemView.findViewById(R.id.paymentstatus);
 
             cardView.setOnClickListener(this);
         /**   itemView.setOnClickListener(new View.OnClickListener() {

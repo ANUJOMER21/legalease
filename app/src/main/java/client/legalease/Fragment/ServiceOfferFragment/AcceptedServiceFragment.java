@@ -95,6 +95,9 @@ LinearLayout ll1;
         datum3List1=new ArrayList<>();
         View view=inflater.inflate(R.layout.fragment_accepted_service, container, false);
         initview(view);
+        LinearLayoutManager manager=new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+        rv_acceptedOrder.setLayoutManager(manager);
+        datum3List1=new ArrayList<>();
         ll1.setVisibility(View.GONE);
         getservicedata(1);
         previous.setOnClickListener(new View.OnClickListener() {
@@ -140,8 +143,7 @@ rv_acceptedOrder.addOnScrollListener(new RecyclerView.OnScrollListener() {
     private void getservicedata(int i) {
         CommonSharedPreference commonSharedPreference=new CommonSharedPreference(getContext());
         String token = "Bearer " + commonSharedPreference.getToken();
-        LinearLayoutManager manager=new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
-        rv_acceptedOrder.setLayoutManager(manager);
+
         int client_id=commonSharedPreference.getLoginSharedPref(getContext()).getId();
         Log.d("client_id", "getallrequest: "+client_id);
         final String p=String.valueOf(i);
@@ -159,27 +161,54 @@ getservicelist("pending",p,token);
                 if(response.body()==null){
                     Toast.makeText(getContext(), "null", Toast.LENGTH_SHORT).show();
                 }
-                else {
+           /**     else {
                     lastpage=response.body().getOfferList().getLastPage();
 
-                    List<Datum3> datum3List=new ArrayList<>();
 
+                    datum3List1.addAll(response.body().getOfferList().getData());
+                    List<Datum3>rejectedorderlist=new ArrayList<>();
                     for (Datum3 data:response.body().getOfferList().getData()
                          ) {
-                        if(!data.getStatus().equals("2"))
+                        if(data.getStatus().equals("2"))
                         {
-                            datum3List.add(data);
+                            datum3List1.remove(data);
                         }
                     }
-                    size= datum3List.size()+size;
+                    size= datum3List1.size()+size;
                     totalsize=response.body().getOfferList().getTotal();
 
                     progressBar.setVisibility(View.GONE);
-                    ServiceOfferAdapter serviceOfferAdapter = new ServiceOfferAdapter(getContext(),datum3List, 0);
+                    ServiceOfferAdapter serviceOfferAdapter = new ServiceOfferAdapter(getContext(),datum3List1, 0);
                     rv_acceptedOrder.setAdapter(serviceOfferAdapter);
-                    serviceOfferAdapter.notifyItemRangeInserted(rvstartpos,rvstartpos+datum3List.size());
+                    serviceOfferAdapter.notifyDataSetChanged();
                     rvstartpos=rvstartpos+response.body().getOfferList().getData().size();
 
+
+
+
+
+                }**/
+                else {
+                    lastpage=response.body().getOfferList().getLastPage();
+                    progressBar.setVisibility(View.GONE);
+
+
+                    //         rv_acceptedOrder.setLayoutManager(manager);
+                    List<Datum3>rejectedorderlist=new ArrayList<>();
+                    for (int i=0;i< response.body().getOfferList().getData().size();i++
+                    ) {
+                        Datum3 d= response.body().getOfferList().getData().get(i);
+                        if(!d.getStatus().equals("2")){
+                    rejectedorderlist.add(d);
+                        }
+
+                    }
+                    datum3List1.addAll(rejectedorderlist);
+                    size= datum3List1.size()+size;
+                    totalsize=response.body().getOfferList().getTotal();
+                    ServiceOfferAdapter serviceOfferAdapter=new ServiceOfferAdapter(getContext(),datum3List1,2);
+                    rv_acceptedOrder.setAdapter(serviceOfferAdapter);
+                    serviceOfferAdapter.notifyDataSetChanged();
 
 
 

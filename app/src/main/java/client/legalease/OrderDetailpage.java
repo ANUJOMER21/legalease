@@ -60,10 +60,17 @@ amount.setText("₹ "+String.valueOf(datum.getAmount()));
         Date date1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datum.getCreatedAt());
       String  createdate = new SimpleDateFormat("dd-MM-yyyy").format(date1);
 Date date2=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datum.getOrderCompleteAt());
-        String  acceptat = new SimpleDateFormat("dd-MM-yyyy").format(date2);
 
-        ordercreatedate.setText(createdate);
-        orderacceptdate.setText(acceptat);
+        String  acceptat = new SimpleDateFormat("dd-MM-yyyy").format(date2);
+        Log.d("date", "setData: "+datum.getOrderCompleteAt()+"date2"+date2.getYear()+" due date "+acceptat);
+        if(datum.getOrderCompleteAt().substring(0,4).equals("0000")) {
+
+            orderacceptdate.setText("00-00-0000");
+        }
+        else {
+            orderacceptdate.setText(acceptat);
+        }
+            ordercreatedate.setText(createdate);
         List<OrderService> orderServiceList=new ArrayList<>();
         orderServiceList=datum.getOrderServiceList();
         Log.d("list", "setData: "+orderServiceList.size());

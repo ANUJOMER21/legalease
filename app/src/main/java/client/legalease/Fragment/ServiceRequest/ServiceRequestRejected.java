@@ -173,7 +173,7 @@ public class ServiceRequestRejected extends Fragment {
 
                     List<Datum> list=new ArrayList<>();
                     for(Datum d: response.body().getRequestlist().getData()){
-                        if(d.getStatus()!=1){
+                        if(d.getStatus()!=1    ){
                             list.add(d);
                         }
                     }

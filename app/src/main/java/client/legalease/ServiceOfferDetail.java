@@ -224,9 +224,14 @@ checkout.open(ServiceOfferDetail.this,options);
             public void onResponse(Call<ClientOrderModel> call, Response<ClientOrderModel> response) {
                 Log.d("orderacceptreject", "onResponse: "+response);
                if(response.body().getStatus().equals("success")) {
-                   Toast.makeText(ServiceOfferDetail.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                       showAlert(ServiceOfferDetail.this,"Order is Accepted By You. It Shows on My Orders ");
+                 //  Toast.makeText(ServiceOfferDetail.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                      if(accept.equals("3")) {
+                          showAlert(ServiceOfferDetail.this, "Order is Accepted By You. It Shows on My Orders ");
+                      }
+                      else{
+                          showAlert(ServiceOfferDetail.this, "Order is Rejected By You. It Shows on Rejected Offer Tab ");
 
+                      }
                }
             }
 

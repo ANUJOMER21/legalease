@@ -12,6 +12,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,7 +25,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,10 +39,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.exoplayer2.util.UriUtil;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +57,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import client.legalease.Adapter.UploadedDocumentAdapter2;
+import client.legalease.Common.FileUtils;
 import client.legalease.Common.ImagePickerActivity;
 import client.legalease.Interface.IImageCompressTaskListener;
 import client.legalease.Model.UploadDocServerModel.Uploaddocumentserver;
@@ -68,6 +79,8 @@ import retrofit2.Response;
 public class UploadDocument2 extends AppCompatActivity {
 Spinner spinner;
 String mytoken="";
+
+    private static final String IMAGE_DIRECTORY = "/demonuts_upload_gallery";
     String path;
     Dialog dialog;
     private ExecutorService mExecutorService = Executors.newFixedThreadPool(1);
@@ -91,6 +104,7 @@ String mytoken="";
 HashMap<Integer,String> documentidname;
     private String orderid;
     LinearLayout linear_front,linear_back;
+    private static final int BUFFER_SIZE = 1024 * 2;
     private String id;
     private String industryType;
     private String price;
@@ -295,7 +309,7 @@ private RecyclerView rv_uploadedDoc;
     private void uploaddocument(String path) {
         progressDialog.show();
         File file1 = new File(path);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file1);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file1);
         MultipartBody.Part file = MultipartBody.Part.createFormData("file", file1.getName(), requestBody);
         //   RequestBody token = RequestBody.create(MediaType.parse("multipart/form-data"), mytoken);
         String token="Bearer "+mytoken;
@@ -430,6 +444,16 @@ linear_pdf.setVisibility(View.GONE);
 
             }
         });
+
+        linear_pdf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent();
+                intent.setType("application/pdf");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent,1);
+            }
+        });
     }
     private void launchCameraIntent(int imageViewSeletor) {
         Intent intent = new Intent(UploadDocument2.this, ImagePickerActivity.class);
@@ -510,10 +534,12 @@ linear_pdf.setVisibility(View.GONE);
           else{
               iv_secondDoc.setImageBitmap(bitmap);
           }
+              Log.d("path", "onActivityResult: "+path);
           uploaddocument(path);
           dialog.dismiss();
 
         }
+
        /** else if(requestCode== REQUEST_IMAGE&&requestCode==Activity.RESULT_OK){
             Uri uri = data.getParcelableExtra("path");
             Log.d("uriud2", "onActivityResult: "+uri);
@@ -533,6 +559,76 @@ linear_pdf.setVisibility(View.GONE);
             }
 
         }**/
+    }
+
+    public static String getFilePathFromURI(Context context, Uri contentUri) {
+        //copy file and send new file path
+        String fileName = getFileName(contentUri);
+        File wallpaperDirectory = new File(
+                Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
+        // have the object build the directory structure, if needed.
+        if (!wallpaperDirectory.exists()) {
+            wallpaperDirectory.mkdirs();
+        }
+        if (!TextUtils.isEmpty(fileName)) {
+            File copyFile = new File(wallpaperDirectory + File.separator + fileName);
+            // create folder if not exists
+
+            copy(context, contentUri, copyFile);
+            return copyFile.getAbsolutePath();
+        }
+        return null;
+    }
+    public static String getFileName(Uri uri) {
+        if (uri == null) return null;
+        String fileName = null;
+        String path = uri.getPath();
+        int cut = path.lastIndexOf('/');
+        if (cut != -1) {
+            fileName = path.substring(cut + 1);
+        }
+        return fileName;
+    }
+    public static void copy(Context context, Uri srcUri, File dstFile) {
+        try {
+            InputStream inputStream = context.getContentResolver().openInputStream(srcUri);
+            if (inputStream == null) return;
+            OutputStream outputStream = new FileOutputStream(dstFile);
+            copystream(inputStream, outputStream);
+            inputStream.close();
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static int copystream(InputStream input, OutputStream output) throws Exception, IOException {
+        byte[] buffer = new byte[BUFFER_SIZE];
+
+        BufferedInputStream in = new BufferedInputStream(input, BUFFER_SIZE);
+        BufferedOutputStream out = new BufferedOutputStream(output, BUFFER_SIZE);
+        int count = 0, n = 0;
+        try {
+            while ((n = in.read(buffer, 0, BUFFER_SIZE)) != -1) {
+                out.write(buffer, 0, n);
+                count += n;
+            }
+            out.flush();
+        } finally {
+            try {
+                out.close();
+            } catch (IOException e) {
+                Log.e(e.getMessage(), String.valueOf(e));
+            }
+            try {
+                in.close();
+            } catch (IOException e) {
+                Log.e(e.getMessage(), String.valueOf(e));
+            }
+        }
+        return count;
     }
 
     private String getRealPathFromURI(Uri contentURI) {

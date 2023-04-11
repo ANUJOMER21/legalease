@@ -142,12 +142,17 @@ EditText remark;
             @Override
             public void onClick(View v) {
                 HashMap<String ,String>data=new HashMap<>();
-                data.put("associate_id",String.valueOf(datum2.getAssociateId()));
-                data.put("meeting_date",date);
-                data.put("meeting_time",time);
-                data.put("remarks",remark.getText().toString());
-                sendData(data);
-                dialog.dismiss();
+                if(remark.getText().toString().isEmpty()){
+                    Toast.makeText(ServiceRequestDetail.this, "Please enter a message", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    data.put("associate_id", String.valueOf(datum2.getAssociateId()));
+                    data.put("meeting_date", date);
+                    data.put("meeting_time", time);
+                    data.put("remarks", remark.getText().toString());
+                    sendData(data);
+                    dialog.dismiss();
+                }
             }
         });
         cancel_text.setOnClickListener(new View.OnClickListener() {

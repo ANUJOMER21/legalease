@@ -538,6 +538,7 @@ public void uploaddoc2(final UploadDocument2 uploadDocument2,MultipartBody.Part 
             public void onFailure(Call<Uploaddocumentserver> call, Throwable t) {
                 Toast.makeText(uploadDocument2, "Check your internet connection", Toast.LENGTH_SHORT).show();
 
+                Log.d("callapires", "onResponse: "+t.toString());
             }
         });
 }

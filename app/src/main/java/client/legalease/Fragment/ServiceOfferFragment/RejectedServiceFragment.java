@@ -94,6 +94,9 @@ private LinearLayout ll1;
         View view = inflater.inflate(R.layout.fragment_rejected_service, container, false);
         initview(view);
         ll1.setVisibility(View.GONE);
+        LinearLayoutManager manager=new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+        rv_acceptedOrder.setLayoutManager(manager);
+        datum3List=new ArrayList<>();
         getservicedata(1);
         previous.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,22 +154,22 @@ private LinearLayout ll1;
                 else {
                     lastpage=response.body().getOfferList().getLastPage();
                     progressBar.setVisibility(View.GONE);
-                    datum3List=response.body().getOfferList().getData();
-                    LinearLayoutManager manager=new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
-                    rv_acceptedOrder.setLayoutManager(manager);
+             //       datum3List.addAll(response.body().getOfferList().getData());
+
            //         rv_acceptedOrder.setLayoutManager(manager);
                     List<Datum3>rejectedorderlist=new ArrayList<>();
-                    for (int i=0;i< datum3List.size();i++
+                    for (int i=0;i< response.body().getOfferList().getData().size();i++
                     ) {
-                        Datum3 d= datum3List.get(i);
+                        Datum3 d= response.body().getOfferList().getData().get(i);
                         if(d.getStatus().equals("2")){
                             rejectedorderlist.add(d);
                         }
 
                     }
+                    datum3List.addAll(rejectedorderlist);
                     size= datum3List.size()+size;
                     totalsize=response.body().getOfferList().getTotal();
-                    ServiceOfferAdapter serviceOfferAdapter=new ServiceOfferAdapter(getContext(),rejectedorderlist,2);
+                    ServiceOfferAdapter serviceOfferAdapter=new ServiceOfferAdapter(getContext(),datum3List,2);
                     rv_acceptedOrder.setAdapter(serviceOfferAdapter);
                     serviceOfferAdapter.notifyDataSetChanged();
 
