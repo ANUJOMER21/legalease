@@ -10,7 +10,9 @@
     <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
+
     <application
+        android:requestLegacyExternalStorage="true"
         android:name=".BroadcastReceiver.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/app_logo"

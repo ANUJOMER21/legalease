@@ -164,7 +164,7 @@ public class FragmentHome extends Fragment {
             public void onFailure(Call<Account> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
                 Log.d("accountdatafailure", "onFailure: "+t.toString());
-                Toast.makeText(getContext(),"Please check your internet connection",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),"Please check your internet connection",Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -206,7 +206,7 @@ public class FragmentHome extends Fragment {
             public void onFailure(Call<ServiceModel> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
                 Log.d("servicedatafailure", "onFailure: "+t.toString());
-                Toast.makeText(getActivity(),"Please chk your internet connection",Toast.LENGTH_SHORT).show();
+            //    Toast.makeText(getContext(),"Please chk your internet connection",Toast.LENGTH_SHORT).show();
 
             }
         });

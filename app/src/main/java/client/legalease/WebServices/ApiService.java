@@ -20,6 +20,7 @@ import client.legalease.Model.Meetingbookmodel.Meetingschedulemodel;
 import client.legalease.Model.MyEasyMoneyModel.MyEasyMoneyModel;
 import client.legalease.Model.MyNetworkModel.MyNetworkModel;
 import client.legalease.Model.NetrorkDetailsModel.NetworkDetailsModel;
+import client.legalease.Model.NewPartnerModel.PartnerModel2;
 import client.legalease.Model.OrderModel.OrderModel;
 import client.legalease.Model.LoginModel.LoginModel;
 
@@ -62,6 +63,7 @@ import client.legalease.Model.VideoCategoryModel.VideoCategory;
 import client.legalease.Model.VideoModel.VideoModel;
 import client.legalease.Model.WalletModel;
 import client.legalease.Model.customerRequestListModel.CustomerRequestListmodel;
+import client.legalease.Model.meetingmodel.Meetingmodel;
 import client.legalease.Model.myorder;
 import client.legalease.Model.updateprofilemodel.Updateprofilemodel;
 import client.legalease.Model.uploaddocumentlistModel.Uploaddocumentlist;
@@ -306,7 +308,7 @@ public interface ApiService {
 
 
     @GET(GETMYORDER)
-    Call<AcceptedOrderModel> getMyBills(@Header("Authorization") String token,@Query("page")String page);
+    Call<AcceptedOrderModel> getMyBills(@Header("Authorization") String token,@Query("page")String page,@Query("status")String status);
 
     @GET(GETMAINCHECKSUM)
     Call<FinalPaymentModel> getCheckSumData(@Query("token") String token, @Query("orderId") String orderId,@Query("id") String id,@Query("price") String price);
@@ -404,9 +406,9 @@ Call<Bookmeetmodel> orderapproval(@Header("Authorization")String Auth,@FieldMap 
     @POST(VERIFYOTP)
     Call<OtpVerificationModel> getOtpVerification(@FieldMap HashMap<String, String> otpCrediantial);
 @GET(MEETINGS)
-Call<Meetingschedulemodel> meetings(@Query("page")String page,@Header("Authorization") String token);
+Call<Meetingmodel> meetings(@Query("page")String page, @Header("Authorization") String token);
     @GET(CUSTOMERASSOCIATELIST)
-    Call<Partnermodel> getAssociateList (@Query("Page") String page,@Header("Authorization") String token,@Query("lat")String lat,@Query("lon")String lon,@Query("service_id")String sid);
+    Call<PartnerModel2> getAssociateList (@Query("page") String page, @Header("Authorization") String token, @Query("lat")String lat, @Query("long")String lon, @Query("service_id")String sid);
 @FormUrlEncoded
     @POST(ORDERACCEPTREJECT)
     Call<ClientOrderModel> orderacceptreject(@Header("Authorization") String token,@FieldMap HashMap<String,String> order);
@@ -414,7 +416,7 @@ Call<Meetingschedulemodel> meetings(@Query("page")String page,@Header("Authoriza
     @GET(GETSERVICEREQ)
     Call<ServiceRequestModel>  getServiceRequest(@Query("page") String page,@Header("Authorization") String token,@Query("customer_id")String customerid);
 @GET(CUSTOMERREQUESTLIST)
-Call<CustomerRequestListmodel> customerreqli(@Query("page")String page ,@Header("Authorization")String token);
+Call<CustomerRequestListmodel> customerreqli(@Query("page")String page ,@Header("Authorization")String token,@Query("status")String status);
 
     @FormUrlEncoded
   @POST(BOOKMEETING)

@@ -140,7 +140,7 @@ if(partnerDetail.getCity()!=null){
         }
         if(!partnerDetail.getService().isEmpty()){
             String services=getService(partnerDetail.getService());
-            Service_offered.setText(services);
+            Service_offered.setText("Services Offered: "+services);
         }
         else {
             Service_offered.setText("");

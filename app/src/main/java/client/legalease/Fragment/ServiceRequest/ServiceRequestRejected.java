@@ -159,7 +159,7 @@ public class ServiceRequestRejected extends Fragment {
         }
         });
          **/
-        Call<CustomerRequestListmodel> call = RetrofitClient.getApiService().customerreqli(p,token);
+        Call<CustomerRequestListmodel> call = RetrofitClient.getApiService().customerreqli(p,token,"2");
         call.enqueue(new Callback<CustomerRequestListmodel>() {
             @Override
             public void onResponse(Call<CustomerRequestListmodel> call, Response<CustomerRequestListmodel> response) {

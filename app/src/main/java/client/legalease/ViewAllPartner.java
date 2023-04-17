@@ -38,6 +38,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 
 import client.legalease.APIConstant.ApiConstant;
+import client.legalease.Model.NewPartnerModel.Assoicate;
+import client.legalease.Model.NewPartnerModel.PartnerModel2;
 import client.legalease.Model.PartnerModel.Datum;
 import client.legalease.Model.PartnerModel.Partnermodel;
 import client.legalease.Preference.CommonSharedPreference;
@@ -68,7 +70,7 @@ public class ViewAllPartner extends AppCompatActivity {
     private static final int REQUEST_LOCATION = 1;
     RecyclerView rv_all_partner;
     ProgressBar progressBar;
-    List<Datum> datumList;
+    List<Assoicate> datumList;
 
     TextView lattv, lontv;
     FusedLocationProviderClient mFusedLocationClient;
@@ -145,24 +147,24 @@ int lastpage=1;
         Log.d("endlocation", "______________________________________________________________________________");
         String token = "Bearer " + commonSharedPreference.getToken();
         Log.d("vaptoken", "getallpartner: " + token);
-        Call < Partnermodel > call = RetrofitClient.getApiService().getAssociateList(String.valueOf(page),token,commonSharedPreference.getlat(),commonSharedPreference.getlon(),id);
+        Call <PartnerModel2> call = RetrofitClient.getApiService().getAssociateList(String.valueOf(page),token,commonSharedPreference.getlat(),commonSharedPreference.getlon(),id);
         Log.d("api url", "getallpartner: "+call.request().url());
-        call.enqueue(new Callback < Partnermodel > () {
+        call.enqueue(new Callback < PartnerModel2>() {
             @Override
-            public void onResponse(Call < Partnermodel > call, Response < Partnermodel > response) {
+            public void onResponse(Call < PartnerModel2 > call, Response < PartnerModel2 > response) {
                 if (response.body() == null) {
                     Toast.makeText(ViewAllPartner.this, "null ", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     progressBar.setVisibility(View.GONE);
-                    Log.d("api2", "onResponse: " + response.toString());
+                    Log.d("api2", "onResponse: " + response.body().getAssoicate().get(0).getAddress());
                     try {
-                        datumList = response.body().getAssoicate().getData();
+
                     } catch (NullPointerException ignore) {
                     } catch (IndexOutOfBoundsException ignore) {
                     }
                     Long lp;
-                    lastpage = response.body().getAssoicate().getLastPage().intValue();
+                        datumList=response.body().getAssoicate();
                  ///   pagenum.setText(response.body().getAssoicate().getCurrentPage().toString());
                     Log.d("lastpage", "onResponse: " + lastpage);
                  LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
@@ -176,7 +178,7 @@ int lastpage=1;
             }
 
             @Override
-            public void onFailure(Call < Partnermodel > call, Throwable throwable) {
+            public void onFailure(Call < PartnerModel2 > call, Throwable throwable) {
                 Log.d("viewallassociate", "onFailure: " + throwable.toString());
             }
         });

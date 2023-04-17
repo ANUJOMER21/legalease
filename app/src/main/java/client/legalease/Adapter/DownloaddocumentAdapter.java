@@ -94,11 +94,18 @@ public class DownloaddocumentAdapter extends RecyclerView.Adapter<View6> {
             } else {
                 holder.page.setText("Other Page");
             }**/
-            Glide.with(context).
-                    load(docImage).
-                    apply(fitCenterTransform())
-                    .into(holder.iv_docImage);
-
+           if(substringAfterLastDot(docImage).equals("pdf")){
+               Glide.with(context).
+                       load(R.drawable.pdf_file_svgrepo_com).
+                       apply(fitCenterTransform())
+                       .into(holder.iv_docImage);
+           }
+           else {
+               Glide.with(context).
+                       load(docImage).
+                       apply(fitCenterTransform())
+                       .into(holder.iv_docImage);
+           }
             String finalDocImage = docImage;
 
             String finalDocName = docName;
@@ -115,7 +122,18 @@ public class DownloaddocumentAdapter extends RecyclerView.Adapter<View6> {
                                  saveImage(resource);
                              }
                          });**/
-               downloadImageNew(finalDocName,finalDocImage);
+                String type="";
+                if(substringAfterLastDot(finalDocImage).equals("pdf")){
+
+                    type="pdf";
+                } else if (substringAfterLastDot(finalDocImage).equals("jpg")) {
+
+                }
+                else if (substringAfterLastDot(finalDocImage).equals("png")) {
+
+                }
+                    Log.d("imageType", "onClick: "+substringAfterLastDot(finalDocImage));
+                    downloadImageNew(finalDocName,finalDocImage,substringAfterLastDot(finalDocImage));
                 }
             });
         } catch (NullPointerException e) {
@@ -125,24 +143,35 @@ public class DownloaddocumentAdapter extends RecyclerView.Adapter<View6> {
         }
 
     }
-    private void downloadImageNew(String filename, String downloadUrlOfImage){
+    public static String substringAfterLastDot(String string) {
+        return getSubstringAfter(string, '.');
+    }
+
+    public static String getSubstringAfter(String s, char c) {
+        return s.substring(s.lastIndexOf(c) + 1).trim();
+    }
+    private void downloadImageNew(String filename, String downloadUrlOfImage,String type){
         try{
             Log.d("downloadimage", "downloadImageNew: working");
             DownloadManager dm = (DownloadManager)context. getSystemService(Context.DOWNLOAD_SERVICE);
             Uri downloadUri = Uri.parse(downloadUrlOfImage);
-            DownloadManager.Request request = new DownloadManager.Request(downloadUri);
+            Log.d("download uri", "downloadImageNew: "+downloadUri);
+           DownloadManager.Request request = new DownloadManager.Request(downloadUri);
             request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
                     .setAllowedOverRoaming(false)
                     .setTitle(filename)
-                    .setMimeType("image/jpeg") // Your file type. You can use this code to download other file types also.
+                   // .setMimeType("image/jpeg") // Your file type. You can use this code to download other file types also.
                     .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES,File.separator + filename + ".jpg");
+                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES,File.separator + filename + "."+type);
             dm.enqueue(request);
-            Toast.makeText(context, "Image download started.", Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(context, "Document download started.", Toast.LENGTH_SHORT).show();
         }catch (Exception e){
-            Toast.makeText(context, "Image download failed.", Toast.LENGTH_SHORT).show();
+            Log.d("downe", "downloadImageNew: "+e.toString());
+            Toast.makeText(context, "Document download failed.", Toast.LENGTH_SHORT).show();
         }
     }
+
     @Override
     public int getItemCount() {
         return downloaddocumentmodelArrayList.size();

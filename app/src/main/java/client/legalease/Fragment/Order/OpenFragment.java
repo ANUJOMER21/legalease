@@ -23,6 +23,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import client.legalease.Adapter.CloseOrderAdapter;
 import client.legalease.Adapter.OrderAdapter;
 import client.legalease.Model.Acceptedordermodel.AcceptedOrderModel;
 import client.legalease.Model.Acceptedordermodel.Datum;
@@ -81,7 +82,9 @@ public class OpenFragment extends Fragment {
         RecyclerView.LayoutManager eLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL, false);
         rv_order.setLayoutManager(eLayoutManager);
         datumList=new ArrayList<>();
-        getInvoiceData(page1);
+      getInvoiceData(page1);
+
+
         rv_order.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -94,8 +97,8 @@ public class OpenFragment extends Fragment {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if(lastpage!=1){
-                    if(isscrolling&& lastpage>=page1&& size!=totalsize){
+               if(lastpage!=1){
+                    if(isscrolling&& page1<=lastpage&& size!=totalsize){
                         getInvoiceData(++page1);
 
                     }
@@ -112,102 +115,66 @@ public class OpenFragment extends Fragment {
 
 
     private void getInvoiceData(int page) {
-            ApiService api = UserMoreDetailActivity.RetroClient.getApiService();
+        ApiService api = UserMoreDetailActivity.RetroClient.getApiService();
         CommonSharedPreference commonSharedPreference=new CommonSharedPreference(getActivity());
         String token = "Bearer " + commonSharedPreference.getToken();
-        Call<AcceptedOrderModel> call = api.getMyBills(token,String.valueOf(page));
-call.enqueue(new Callback<AcceptedOrderModel>() {
-    @Override
-    public void onResponse(Call<AcceptedOrderModel> call, Response<AcceptedOrderModel> response) {
+        Call<AcceptedOrderModel> call = api.getMyBills(token,String.valueOf(page),"6,7");
+        call.enqueue(new Callback<AcceptedOrderModel>() {
+            @Override
+            public void onResponse(Call<AcceptedOrderModel> call, Response<AcceptedOrderModel> response) {
 
-        if (response.body() == null) {
-            Toast.makeText(getActivity(), "null", Toast.LENGTH_SHORT).show();
-            Log.d("service_request", "onResponse: " + response);
-        } else {
-            Log.d("openfragment", "onResponse: "+page+"lastpage"+lastpage);
-            progressBar.setVisibility(View.GONE);
-            List<Datum> data = new ArrayList<>();
-            lastpage = response.body().getOrderslist().getLastPage();
-           // page1=response.body().getOrderslist().getCurrentPage();
-            try {
-               for (Datum datum3 : response.body().getOrderslist().getData()) {
-                    if (!datum3.getStatus().equals("8")) {
-                        data.add(datum3);
-                    }
-
-                }
-                datumList.addAll(data);
-
-size= data.size()+size;
-totalsize=response.body().getOrderslist().getTotal();
-                Log.d("openfragmentpage", "onResponse: data"+size+"datum"+totalsize);
-                if (datumList.size() == 0) {
-                    rv_order.setVisibility(View.GONE);
-                    tv_noData.setVisibility(View.VISIBLE);
+                if (response.body() == null) {
+                    Toast.makeText(getActivity(), "null", Toast.LENGTH_SHORT).show();
+                    Log.d("service_request", "onResponse: " + response);
                 } else {
-                    tv_noData.setVisibility(View.GONE);
-                    rv_order.setVisibility(View.VISIBLE);
-                    Log.d("data", "onResponse: " + response);
-                    orderAdapetr = new OrderAdapter(getContext(), datumList, selector);
-orderAdapetr.notifyDataSetChanged();
-//                recyclerView.setItemAnimator(new DefaultItemAnimator());
-                    rv_order.setAdapter(orderAdapetr);
-                }
-            } catch (Exception e) {
-                tv_noData.setVisibility(View.VISIBLE);
-                Log.d("exceptionfrag", "onResponse: " + e.toString());
-                rv_order.setVisibility(View.GONE);
-            }
-
-        }
-    }
-
-
-    @Override
-    public void onFailure(Call<AcceptedOrderModel> call, Throwable t) {
-        progressBar.setVisibility(View.GONE);
-      //  Toast.makeText(getContext(),"Please check your internet connection",Toast.LENGTH_SHORT).show();
-    }
-});
-
-          /**  Call<OrderModel> call = api.getMyBills(token,type);
-            call.enqueue(new Callback<OrderModel>() {
-                @Override
-                public void onResponse(Call<OrderModel> call, Response<OrderModel> response) {
+                    Log.d("closefragment", "onResponse: "+page+"lastpage"+lastpage);
                     progressBar.setVisibility(View.GONE);
+                    List<Datum> data = new ArrayList<>();
+                    lastpage = response.body().getOrderslist().getLastPage();
+                    //  page1=response.body().getOrderslist().getCurrentPage();
                     try {
-                        orderData = response.body().getData();
-                        if (orderData.size()==0){
-                            tv_noData.setVisibility(View.VISIBLE);
+                        for (Datum datum3 : response.body().getOrderslist().getData()) {
+                            if (!datum3.getStatus().equals("8")) {
+                                data.add(datum3);
+                            }
+                        }
+                        datumList.addAll(data);
+
+                        size= data.size()+size;
+                        totalsize=response.body().getOrderslist().getTotal();
+                        Log.d("closefragmentpage", "onResponse: data"+data.size()+"datum"+datumList.size());
+
+                        if (datumList.size() == 0) {
                             rv_order.setVisibility(View.GONE);
-                        }else{
+                            tv_noData.setVisibility(View.VISIBLE);
+                        } else {
                             tv_noData.setVisibility(View.GONE);
                             rv_order.setVisibility(View.VISIBLE);
-
-                            orderAdapetr = new OrderAdapter(getContext(), orderData,selector);
-                            RecyclerView.LayoutManager eLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL, false);
-                            rv_order.setLayoutManager(eLayoutManager);
+                            Log.d("data", "onResponse: " + response);
+                            orderAdapetr   =new OrderAdapter(getContext(),datumList,selector);
+                            orderAdapetr.notifyDataSetChanged();
 //                recyclerView.setItemAnimator(new DefaultItemAnimator());
                             rv_order.setAdapter(orderAdapetr);
                         }
-
-
-                    }catch (NullPointerException ignored){
+                    } catch (Exception e) {
                         tv_noData.setVisibility(View.VISIBLE);
+                        Log.d("exceptionfrag", "onResponse: " + e.toString());
                         rv_order.setVisibility(View.GONE);
                     }
 
                 }
-
-                @Override
-                public void onFailure(Call<OrderModel> call, Throwable t) {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(),"Please check your internet connection",Toast.LENGTH_SHORT).show();
-
-                }
-            });**/
+            }
 
 
-        }
+            @Override
+            public void onFailure(Call<AcceptedOrderModel> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                //  Toast.makeText(getContext(),"Please check your internet connection",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
 
     }

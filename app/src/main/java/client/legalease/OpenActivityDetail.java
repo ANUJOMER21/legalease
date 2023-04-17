@@ -215,11 +215,11 @@ btn_download_document.setTypeface(font2);
             public void onResponse(Call<Bookmeetmodel> call, Response<Bookmeetmodel> response) {
                 if(response.body().getStatus().equals("success")){
 
-                        Toast.makeText(OpenActivityDetail.this,"Order Status Changed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OpenActivityDetail.this,"Order is Completed", Toast.LENGTH_SHORT).show();
 
                 }
                 else {
-                    Toast.makeText(OpenActivityDetail.this, "Failed to update status", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OpenActivityDetail.this, "Failed to update Order", Toast.LENGTH_SHORT).show();
                 }
             }
 

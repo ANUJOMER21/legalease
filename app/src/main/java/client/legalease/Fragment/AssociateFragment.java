@@ -23,11 +23,12 @@ import client.legalease.Adapter.ReachUsAdapter;
 import client.legalease.Adapter.viewallPartnerAdapter;
 import client.legalease.Common.CustomLinearLayoutManager;
 import client.legalease.HomeActivity;
-import client.legalease.Model.Meetingbookmodel.Meetingschedulemodel;
+
 import client.legalease.Model.PartnerModel.Datum;
 import client.legalease.Model.PartnerModel.Partnermodel;
 import client.legalease.Model.ReachUsModel.ReachUsData;
 import client.legalease.Model.ReachUsModel.ReachUsModel;
+import client.legalease.Model.meetingmodel.Meetingmodel;
 import client.legalease.Preference.CommonSharedPreference;
 import client.legalease.R;
 import client.legalease.RetrofitClient.RetrofitClient;
@@ -117,10 +118,10 @@ commonSharedPreference=new CommonSharedPreference(getContext());
        String token = "Bearer " + commonSharedPreference.getToken();
         //String token="Bearer "+"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3Byb2Zlc3Npb25hbHNhYXRoaS5jb20vYXBpL3YxL3BhcnRuZXJMb2dpbiIsImlhdCI6MTY3OTIxMjUwMiwiZXhwIjoxNjk0OTgwNTAyLCJuYmYiOjE2NzkyMTI1MDIsImp0aSI6Ijg3bHh1aTlqWTVHbDljSHoiLCJzdWIiOjEzMjYsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.cWo2VJgx0slo0FrxZxpv5c_wiFaPRmL2g_eibz6ecR8";
 
-     Call<Meetingschedulemodel>call=RetrofitClient.getApiService().meetings(String.valueOf(page),token);
-     call.enqueue(new Callback<Meetingschedulemodel>() {
+     Call<Meetingmodel>call=RetrofitClient.getApiService().meetings(String.valueOf(page),token);
+     call.enqueue(new Callback<Meetingmodel>() {
          @Override
-         public void onResponse(Call<Meetingschedulemodel> call, Response<Meetingschedulemodel> response) {
+         public void onResponse(Call<Meetingmodel> call, Response<Meetingmodel> response) {
              Log.d("data", "onResponse: "+response.body().toString());
              if(response.body().getStatus().equals("success")){
                  progressBar.setVisibility(View.GONE);
@@ -134,7 +135,7 @@ commonSharedPreference=new CommonSharedPreference(getContext());
 
 
          @Override
-         public void onFailure(Call<Meetingschedulemodel> call, Throwable t) {
+         public void onFailure(Call<Meetingmodel> call, Throwable t) {
 
          }
      });

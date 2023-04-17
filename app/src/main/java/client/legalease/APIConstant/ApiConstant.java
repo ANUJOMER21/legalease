@@ -49,7 +49,7 @@ public class ApiConstant {
     public static final String GETMAINCHECKSUM = "getMainchecksum";
     public static final String CUSTOMERASSOCIATELIST="customerAssoicateList";
 
-    public  static final String MEETINGS="meetings";
+    public  static final String MEETINGS="customerMeetings";
     public static final String CHECKCOUPAN = "checkCoupon";
     public static final String REMOVECOUPON = "removeCoupon";
     public static final String GETREQUIREDDOCLIST = "getRequireddoclist";

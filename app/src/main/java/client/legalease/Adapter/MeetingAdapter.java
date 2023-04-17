@@ -16,14 +16,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import client.legalease.Model.Meetingbookmodel.Datum;
+import client.legalease.Model.meetingmodel.Datum;
 import client.legalease.R;
 
 public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.ViewHolder> {
 Context context;
-List<Datum> list ;
+List<client.legalease.Model.meetingmodel.Datum> list ;
 
-    public MeetingAdapter(Context context, List<Datum> list) {
+    public MeetingAdapter(Context context, List<client.legalease.Model.meetingmodel.Datum> list) {
         this.context = context;
         this.list = list;
     }
@@ -40,8 +40,14 @@ return new ViewHolder(view);
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
       String assn="";
       String meetate="",meettim="",messag="";
-        Datum datum=list.get(position);
-        assn=datum.getAssociate().getName();
+       Datum datum=list.get(position);
+     if(datum.getAssociate()==null) {
+         assn = "";
+     }
+     else {
+         assn = datum.getAssociate().getName();
+
+     }
         messag=datum.getRemarks();
         try {
             String startDateString = datum.getMeetingDate();

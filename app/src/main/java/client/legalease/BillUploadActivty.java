@@ -56,7 +56,7 @@ import java.util.concurrent.Executors;
 import client.legalease.Adapter.AdapterDocument;
 import client.legalease.Adapter.Common.ImageAdapter;
 import client.legalease.Common.CameraUtils;
-import client.legalease.Common.FilePath;
+
 import client.legalease.Common.FileUtils;
 import client.legalease.Common.ImagePickerActivity;
 import client.legalease.Common.ItemOffsetDecoration;
@@ -731,7 +731,7 @@ public class BillUploadActivty extends AppCompatActivity {
                     if (resultCode == RESULT_OK) {
                         if (data.getData() != null) {
                             final Uri uri = data.getData();
-                          String  PdfPathHolder = FilePath.getPath(this, uri);
+                          String  PdfPathHolder = ImageFilePath.getPath(this, uri);
 
                             pDialog = new ProgressDialog(BillUploadActivty.this);
 

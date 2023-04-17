@@ -144,7 +144,7 @@ private LinearLayout ll1;
         int client_id=commonSharedPreference.getLoginSharedPref(getContext()).getId();
         Log.d("client_id", "getallrequest: "+client_id);
         final String p=String.valueOf(i);
-        Call<ServiceOffermodel> call= RetrofitClient.getApiService().getServiceOffermodel(p,token,"rejected");
+        Call<ServiceOffermodel> call= RetrofitClient.getApiService().getServiceOffermodel(p,token,"2");
         call.enqueue(new Callback<ServiceOffermodel>() {
             @Override
             public void onResponse(Call<ServiceOffermodel> call, Response<ServiceOffermodel> response) {

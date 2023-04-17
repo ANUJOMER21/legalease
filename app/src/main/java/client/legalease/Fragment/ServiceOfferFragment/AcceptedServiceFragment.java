@@ -148,8 +148,8 @@ rv_acceptedOrder.addOnScrollListener(new RecyclerView.OnScrollListener() {
         Log.d("client_id", "getallrequest: "+client_id);
         final String p=String.valueOf(i);
 
-getservicelist("pending",p,token);
-//getservicelist("failed",p,token);
+getservicelist("1,3,4,5",p,token);
+
     }
   int rvstartpos=0;
     private void getservicelist(String pending, String p, String token) {
@@ -158,6 +158,7 @@ getservicelist("pending",p,token);
         call.enqueue(new Callback<ServiceOffermodel>() {
             @Override
             public void onResponse(Call<ServiceOffermodel> call, Response<ServiceOffermodel> response) {
+                Log.d("url", "onResponse: "+response.toString());
                 if(response.body()==null){
                     Toast.makeText(getContext(), "null", Toast.LENGTH_SHORT).show();
                 }
@@ -194,16 +195,10 @@ getservicelist("pending",p,token);
 
 
                     //         rv_acceptedOrder.setLayoutManager(manager);
-                    List<Datum3>rejectedorderlist=new ArrayList<>();
-                    for (int i=0;i< response.body().getOfferList().getData().size();i++
-                    ) {
-                        Datum3 d= response.body().getOfferList().getData().get(i);
-                        if(!d.getStatus().equals("2")){
-                    rejectedorderlist.add(d);
-                        }
 
-                    }
-                    datum3List1.addAll(rejectedorderlist);
+                    Log.d("response", "onResponse: "+response.body().getOfferList().getData().size());
+
+                    datum3List1.addAll(response.body().getOfferList().getData());
                     size= datum3List1.size()+size;
                     totalsize=response.body().getOfferList().getTotal();
                     ServiceOfferAdapter serviceOfferAdapter=new ServiceOfferAdapter(getContext(),datum3List1,2);

@@ -12,7 +12,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,9 +24,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.text.TextUtils;
+import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,17 +37,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.exoplayer2.util.UriUtil;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +49,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import client.legalease.Adapter.UploadedDocumentAdapter2;
-import client.legalease.Common.FileUtils;
 import client.legalease.Common.ImagePickerActivity;
 import client.legalease.Interface.IImageCompressTaskListener;
 import client.legalease.Model.UploadDocServerModel.Uploaddocumentserver;
@@ -77,10 +68,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 public class UploadDocument2 extends AppCompatActivity {
-Spinner spinner;
-String mytoken="";
-
-    private static final String IMAGE_DIRECTORY = "/demonuts_upload_gallery";
+    Spinner spinner;
+    String mytoken="";
     String path;
     Dialog dialog;
     private ExecutorService mExecutorService = Executors.newFixedThreadPool(1);
@@ -100,11 +89,10 @@ String mytoken="";
     ImageView back;
     ImageView iv_delete2;
     ImageView iv_secondDoc;
-   List<Datum> datumArrayList=null;
-HashMap<Integer,String> documentidname;
+    List<Datum> datumArrayList=null;
+    HashMap<Integer,String> documentidname;
     private String orderid;
     LinearLayout linear_front,linear_back;
-    private static final int BUFFER_SIZE = 1024 * 2;
     private String id;
     private String industryType;
     private String price;
@@ -112,7 +100,7 @@ HashMap<Integer,String> documentidname;
     private String professional_fee;
     private String company;
     private String serviceid;
-private RecyclerView rv_uploadedDoc;
+    private RecyclerView rv_uploadedDoc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -188,24 +176,24 @@ private RecyclerView rv_uploadedDoc;
                         List<Datum3> datum3s=new ArrayList<>();
                         datum3s=response.body().getData();
                         for (Datum3 data:datum3s
-                             ) {
-                       String nameofdoc="";
-                       if(documentidname2.containsKey(data.getRequireDocId())){
-                           nameofdoc=documentidname2.get(data.getRequireDocId());
-                           uploadeddocmodelArrayList.add(new Uploadeddocmodel(nameofdoc,data.getUploadedDoc()));
-                           Log.d("namedoc", "onResponse: "+nameofdoc);
-                       }
+                        ) {
+                            String nameofdoc="";
+                            if(documentidname2.containsKey(data.getRequireDocId())){
+                                nameofdoc=documentidname2.get(data.getRequireDocId());
+                                uploadeddocmodelArrayList.add(new Uploadeddocmodel(nameofdoc,data.getUploadedDoc()));
+                                Log.d("namedoc", "onResponse: "+nameofdoc);
+                            }
                             Log.d(data.getId().toString(), "onResponse: "+data.getUploadedDoc());
 
                         }
-                       if(uploadeddocmodelArrayList.size()!=0) {
-                           rv_uploadedDoc.setVisibility(View.VISIBLE);
-                           RecyclerView.LayoutManager eLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-                           rv_uploadedDoc.setLayoutManager(eLayoutManager);
-                           UploadedDocumentAdapter2 uploadedDocumentAdapter2=new UploadedDocumentAdapter2(uploadeddocmodelArrayList,UploadDocument2.this);
-                           rv_uploadedDoc.setAdapter(uploadedDocumentAdapter2);
+                        if(uploadeddocmodelArrayList.size()!=0) {
+                            rv_uploadedDoc.setVisibility(View.VISIBLE);
+                            RecyclerView.LayoutManager eLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+                            rv_uploadedDoc.setLayoutManager(eLayoutManager);
+                            UploadedDocumentAdapter2 uploadedDocumentAdapter2=new UploadedDocumentAdapter2(uploadeddocmodelArrayList,UploadDocument2.this);
+                            rv_uploadedDoc.setAdapter(uploadedDocumentAdapter2);
 
-                       }
+                        }
 
                     }
                 }
@@ -236,63 +224,63 @@ private RecyclerView rv_uploadedDoc;
         uploaddocumentlistCall.enqueue(new Callback<Uploaddocumentlist>() {
             @Override
             public void onResponse(Call<Uploaddocumentlist> call, Response<Uploaddocumentlist> response) {
-              datumArrayList=  response.body().getData();
-           ArrayList<String> documentlist=new ArrayList<>();
+                datumArrayList=  response.body().getData();
+                ArrayList<String> documentlist=new ArrayList<>();
 
-           for(Datum datum :datumArrayList){
-               documentlist.add(datum.getRequireDoc());
-                  documentidname.put(datum.getId(),datum.getRequireDoc());
-           }
+                for(Datum datum :datumArrayList){
+                    documentlist.add(datum.getRequireDoc());
+                    documentidname.put(datum.getId(),datum.getRequireDoc());
+                }
                 getuploadeddoc(documentidname);
                 Log.d("documentidname", "onResponse: "+documentidname.size());
                 ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(UploadDocument2.this,android.R.layout.simple_spinner_item,documentlist);
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(arrayAdapter);
                 Log.d("ud2", "onResponse: "+response.toString()+mytoken);
-             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                 @Override
-                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                      reqDocID=String.valueOf(datumArrayList.get(position).getId());
+                        reqDocID=String.valueOf(datumArrayList.get(position).getId());
 
-                     if (datumArrayList.get(position).getNooffile() == 1) {
-                         linear_front.setVisibility(View.VISIBLE);
-                         linear_back.setVisibility(View.GONE);
-                         iv_pan.setImageDrawable(null);
-                         iv_secondDoc.setImageDrawable(null);
-                         iv_pan.setEnabled(true);
-                         iv_secondDoc.setEnabled(true);
-                         tv_hint1.setVisibility(View.VISIBLE);
-                         tv_hint2.setVisibility(View.VISIBLE);
-                         iv_delete1.setVisibility(View.GONE);
-                         iv_delete2.setVisibility(View.GONE);
-                         tv_uploaded1.setVisibility(View.GONE);
-                         tv_uploaded2.setVisibility(View.GONE);
+                        if (datumArrayList.get(position).getNooffile() == 1) {
+                            linear_front.setVisibility(View.VISIBLE);
+                            linear_back.setVisibility(View.GONE);
+                            iv_pan.setImageDrawable(null);
+                            iv_secondDoc.setImageDrawable(null);
+                            iv_pan.setEnabled(true);
+                            iv_secondDoc.setEnabled(true);
+                            tv_hint1.setVisibility(View.VISIBLE);
+                            tv_hint2.setVisibility(View.VISIBLE);
+                            iv_delete1.setVisibility(View.GONE);
+                            iv_delete2.setVisibility(View.GONE);
+                            tv_uploaded1.setVisibility(View.GONE);
+                            tv_uploaded2.setVisibility(View.GONE);
 
 
-                     } else {
-                         linear_front.setVisibility(View.VISIBLE);
-                         linear_back.setVisibility(View.VISIBLE);
-                         iv_pan.setImageDrawable(null);
-                         iv_secondDoc.setImageDrawable(null);
-                         iv_pan.setEnabled(true);
-                         iv_secondDoc.setEnabled(true);
-                         tv_hint1.setVisibility(View.VISIBLE);
-                         tv_hint2.setVisibility(View.VISIBLE);
-                         iv_delete1.setVisibility(View.GONE);
-                         iv_delete2.setVisibility(View.GONE);
-                         tv_uploaded1.setVisibility(View.GONE);
-                         tv_uploaded2.setVisibility(View.GONE);
-                     }
-                 }
+                        } else {
+                            linear_front.setVisibility(View.VISIBLE);
+                            linear_back.setVisibility(View.VISIBLE);
+                            iv_pan.setImageDrawable(null);
+                            iv_secondDoc.setImageDrawable(null);
+                            iv_pan.setEnabled(true);
+                            iv_secondDoc.setEnabled(true);
+                            tv_hint1.setVisibility(View.VISIBLE);
+                            tv_hint2.setVisibility(View.VISIBLE);
+                            iv_delete1.setVisibility(View.GONE);
+                            iv_delete2.setVisibility(View.GONE);
+                            tv_uploaded1.setVisibility(View.GONE);
+                            tv_uploaded2.setVisibility(View.GONE);
+                        }
+                    }
 
-                 @Override
-                 public void onNothingSelected(AdapterView<?> parent) {
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
 
-                 }
-             });
+                    }
+                });
 
-           //uploaddocument(path);
+                //uploaddocument(path);
 
 
             }
@@ -309,7 +297,7 @@ private RecyclerView rv_uploadedDoc;
     private void uploaddocument(String path) {
         progressDialog.show();
         File file1 = new File(path);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file1);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file1);
         MultipartBody.Part file = MultipartBody.Part.createFormData("file", file1.getName(), requestBody);
         //   RequestBody token = RequestBody.create(MediaType.parse("multipart/form-data"), mytoken);
         String token="Bearer "+mytoken;
@@ -322,7 +310,7 @@ private RecyclerView rv_uploadedDoc;
     }
 
     private void initview() {
-    spinner=findViewById(R.id.spinner);
+        spinner=findViewById(R.id.spinner);
         linear_front=(LinearLayout)findViewById(R.id.linrear_front);
         linear_back=(LinearLayout)findViewById(R.id.linear_back);
         iv_pan = (ImageView)findViewById(R.id.iv_pan);
@@ -351,55 +339,55 @@ private RecyclerView rv_uploadedDoc;
 
         LinearLayout linear_camera = (LinearLayout) dialog.findViewById(R.id.linear_camera);
         LinearLayout linear_gallery = (LinearLayout) dialog.findViewById(R.id.linear_gallery);
-LinearLayout linear_pdf=(LinearLayout)dialog.findViewById(R.id.linear_pdf);
-linear_pdf.setVisibility(View.GONE);
+        LinearLayout linear_pdf=(LinearLayout)dialog.findViewById(R.id.linear_pdf);
+        linear_pdf.setVisibility(View.VISIBLE);
 
         linear_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              /**  if (Build.VERSION.SDK_INT >= 23) {
-                    if (ActivityCompat.checkSelfPermission(UploadDocument2.this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        if (ActivityCompat.shouldShowRequestPermissionRationale(UploadDocument2.this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                            //Show Information about why you need the permission
-                            AlertDialog.Builder builder = new AlertDialog.Builder(UploadDocument2.this);
-                            builder.setMessage("Need Media Access Permission \n");
-                            builder.setPositiveButton("Allow", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                    ActivityCompat.requestPermissions(UploadDocument2.this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CONSTANT);
-                                }
-                            });
-                            builder.setNegativeButton("Deny", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                            builder.show();
-                        } else {
-                            //just request the permission
-                            ActivityCompat.requestPermissions(UploadDocument2.this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CONSTANT);
-                        }
-                    } else {
-                        launchGalleryIntent(imageViewSeletor);
-                        dialog.dismiss();
-                    }
+                /**  if (Build.VERSION.SDK_INT >= 23) {
+                 if (ActivityCompat.checkSelfPermission(UploadDocument2.this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                 if (ActivityCompat.shouldShowRequestPermissionRationale(UploadDocument2.this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                 //Show Information about why you need the permission
+                 AlertDialog.Builder builder = new AlertDialog.Builder(UploadDocument2.this);
+                 builder.setMessage("Need Media Access Permission \n");
+                 builder.setPositiveButton("Allow", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                ActivityCompat.requestPermissions(UploadDocument2.this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CONSTANT);
+                }
+                });
+                 builder.setNegativeButton("Deny", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                }
+                });
+                 builder.show();
+                 } else {
+                 //just request the permission
+                 ActivityCompat.requestPermissions(UploadDocument2.this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CONSTANT);
+                 }
+                 } else {
+                 launchGalleryIntent(imageViewSeletor);
+                 dialog.dismiss();
+                 }
+                 }
+                 else {
+                 launchGalleryIntent(imageViewSeletor);
+                 dialog.dismiss();
+                 }**/
+                if(ContextCompat.checkSelfPermission(getApplicationContext(),Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED){
+                    Intent intent=new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(intent,10);
                 }
                 else {
-                    launchGalleryIntent(imageViewSeletor);
-                    dialog.dismiss();
-                }**/
-              if(ContextCompat.checkSelfPermission(getApplicationContext(),Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED){
-                  Intent intent=new Intent();
-                  intent.setType("image/*");
-                  intent.setAction(Intent.ACTION_GET_CONTENT);
-                  startActivityForResult(intent,10);
-              }
-              else {
-                  ActivityCompat.requestPermissions(UploadDocument2.this,
-                          new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
-              }
+                    ActivityCompat.requestPermissions(UploadDocument2.this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+                }
             }
         });
 
@@ -444,13 +432,11 @@ linear_pdf.setVisibility(View.GONE);
 
             }
         });
-
         linear_pdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent();
+                Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("application/pdf");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intent,1);
             }
         });
@@ -485,150 +471,88 @@ linear_pdf.setVisibility(View.GONE);
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-          if (requestCode == REQUEST_IMAGE) {
-         if (resultCode == Activity.RESULT_OK) {
+        if (requestCode == REQUEST_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Uri uri = data.getParcelableExtra("path");
+                //Log.d("uriud2", "onActivityResult: "+uri);
+                try {
+                    // You can update this bitmap to your server
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                    if (imageViewSeletor == 1) {
+                        iv_pan.setImageURI(uri);
+
+                    } else {
+                        iv_secondDoc.setImageURI(uri);
+
+                    }
+                    String path=getRealPathFromURI(uri);
+
+                    Log.d("uriud2", "onActivityResult: "+path);
+                    //  saveBitmap(bitmap);
+                    uploaddocument(path);
+
+
+                    /**  new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                    String completePath = Environment.getExternalStorageDirectory() + "/" + "legaleaseDocument.jpg";
+                    imageCompressTask = new ImageCompressTask(getApplicationContext(), completePath, iImageCompressTaskListener);
+                    mExecutorService.execute(imageCompressTask);
+                    }
+                    }, 1500);**/
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else if (requestCode == 10 && resultCode == Activity.RESULT_OK) {
+            Uri uri = data.getData();
+            Context context = UploadDocument2.this;
+            path = RealPathUtil.getRealPath(context, uri);
+            Log.d("path", "onActivityResult: "+path);
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            if(imageViewSeletor==1){
+                iv_pan.setImageBitmap(bitmap);}
+            else{
+                iv_secondDoc.setImageBitmap(bitmap);
+            }
+            uploaddocument(path);
+            dialog.dismiss();
+
+        }
+        else if(requestCode==1 && resultCode==Activity.RESULT_OK){
+            Uri uri=data.getData();
+            path=copyFileToInternal(UploadDocument2.this,uri);
+            Log.d("pdf path", "onActivityResult: "+copyFileToInternal(UploadDocument2.this,uri));
+            uploaddocument(path);
+            if(imageViewSeletor==1){
+                iv_pan.setImageResource(R.drawable.pdf_file_svgrepo_com);}
+            else{
+                iv_secondDoc.setImageResource(R.drawable.pdf_file_svgrepo_com);
+            }
+            dialog.dismiss();
+
+
+        }
+
+
+        /** else if(requestCode== REQUEST_IMAGE&&requestCode==Activity.RESULT_OK){
          Uri uri = data.getParcelableExtra("path");
-             //Log.d("uriud2", "onActivityResult: "+uri);
+         Log.d("uriud2", "onActivityResult: "+uri);
          try {
          // You can update this bitmap to your server
          Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
          if (imageViewSeletor == 1) {
-         iv_pan.setImageURI(uri);
-
+         iv_pan.setImageBitmap(bitmap);
          } else {
-         iv_secondDoc.setImageURI(uri);
-
+         iv_secondDoc.setImageBitmap(bitmap);
          }
-             String path=getRealPathFromURI(uri);
-
-             Log.d("uriud2", "onActivityResult: "+path);
-       //  saveBitmap(bitmap);
-             uploaddocument(path);
-
-
-       /**  new Handler().postDelayed(new Runnable() {
-
-        @Override public void run() {
-
-        String completePath = Environment.getExternalStorageDirectory() + "/" + "legaleaseDocument.jpg";
-
-        imageCompressTask = new ImageCompressTask(getApplicationContext(), completePath, iImageCompressTaskListener);
-
-        mExecutorService.execute(imageCompressTask);
-        }
-        }, 1500);**/
-
-
-         } catch (IOException e) {
+         }
+         catch (IOException e) {
          e.printStackTrace();
          }
-         }
-         }
-       else if (requestCode == 10 && resultCode == Activity.RESULT_OK) {
-            Uri uri = data.getData();
-            Context context = UploadDocument2.this;
-            path = RealPathUtil.getRealPath(context, uri);
-            Bitmap bitmap = BitmapFactory.decodeFile(path);
-          if(imageViewSeletor==1){
-            iv_pan.setImageBitmap(bitmap);}
-          else{
-              iv_secondDoc.setImageBitmap(bitmap);
-          }
-              Log.d("path", "onActivityResult: "+path);
-          uploaddocument(path);
-          dialog.dismiss();
-
-        }
-
-       /** else if(requestCode== REQUEST_IMAGE&&requestCode==Activity.RESULT_OK){
-            Uri uri = data.getParcelableExtra("path");
-            Log.d("uriud2", "onActivityResult: "+uri);
-            try {
-                // You can update this bitmap to your server
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                if (imageViewSeletor == 1) {
-                    iv_pan.setImageBitmap(bitmap);
-
-                } else {
-                    iv_secondDoc.setImageBitmap(bitmap);
-
-                }
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }**/
-    }
-
-    public static String getFilePathFromURI(Context context, Uri contentUri) {
-        //copy file and send new file path
-        String fileName = getFileName(contentUri);
-        File wallpaperDirectory = new File(
-                Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
-        // have the object build the directory structure, if needed.
-        if (!wallpaperDirectory.exists()) {
-            wallpaperDirectory.mkdirs();
-        }
-        if (!TextUtils.isEmpty(fileName)) {
-            File copyFile = new File(wallpaperDirectory + File.separator + fileName);
-            // create folder if not exists
-
-            copy(context, contentUri, copyFile);
-            return copyFile.getAbsolutePath();
-        }
-        return null;
-    }
-    public static String getFileName(Uri uri) {
-        if (uri == null) return null;
-        String fileName = null;
-        String path = uri.getPath();
-        int cut = path.lastIndexOf('/');
-        if (cut != -1) {
-            fileName = path.substring(cut + 1);
-        }
-        return fileName;
-    }
-    public static void copy(Context context, Uri srcUri, File dstFile) {
-        try {
-            InputStream inputStream = context.getContentResolver().openInputStream(srcUri);
-            if (inputStream == null) return;
-            OutputStream outputStream = new FileOutputStream(dstFile);
-            copystream(inputStream, outputStream);
-            inputStream.close();
-            outputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static int copystream(InputStream input, OutputStream output) throws Exception, IOException {
-        byte[] buffer = new byte[BUFFER_SIZE];
-
-        BufferedInputStream in = new BufferedInputStream(input, BUFFER_SIZE);
-        BufferedOutputStream out = new BufferedOutputStream(output, BUFFER_SIZE);
-        int count = 0, n = 0;
-        try {
-            while ((n = in.read(buffer, 0, BUFFER_SIZE)) != -1) {
-                out.write(buffer, 0, n);
-                count += n;
-            }
-            out.flush();
-        } finally {
-            try {
-                out.close();
-            } catch (IOException e) {
-                Log.e(e.getMessage(), String.valueOf(e));
-            }
-            try {
-                in.close();
-            } catch (IOException e) {
-                Log.e(e.getMessage(), String.valueOf(e));
-            }
-        }
-        return count;
+         }**/
     }
 
     private String getRealPathFromURI(Uri contentURI) {
@@ -668,7 +592,32 @@ linear_pdf.setVisibility(View.GONE);
         }
     }
 
+    public static String copyFileToInternal(Context context, Uri fileUri) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            Cursor cursor = context.getContentResolver().query(fileUri, new String[]{OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE}, null, null);
+            cursor.moveToFirst();
 
+            String displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+            long size = cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE));
+
+            File file = new File(context.getFilesDir() + "/" + displayName);
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
+                InputStream inputStream = context.getContentResolver().openInputStream(fileUri);
+                byte buffers[] = new byte[1024];
+                int read;
+                while ((read = inputStream.read(buffers)) != -1) {
+                    fileOutputStream.write(buffers, 0, read);
+                }
+                inputStream.close();
+                fileOutputStream.close();
+                return file.getPath();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 
 
     String finalMediaPath = "";
@@ -693,8 +642,8 @@ linear_pdf.setVisibility(View.GONE);
             // Parsing any Media type file
             RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file1);
             MultipartBody.Part file = MultipartBody.Part.createFormData("file", file1.getName(), requestBody);
-         //   RequestBody token = RequestBody.create(MediaType.parse("multipart/form-data"), mytoken);
-           String token="Bearer "+mytoken;
+            //   RequestBody token = RequestBody.create(MediaType.parse("multipart/form-data"), mytoken);
+            String token="Bearer "+mytoken;
             RequestBody orderId = RequestBody.create(MediaType.parse("multipart/form-data"), id);
             RequestBody requireddocid = RequestBody.create(MediaType.parse("multipart/form-data"),reqDocID );
             RequestBody uploadedType = RequestBody.create(MediaType.parse("multipart/form-data"), String.valueOf(imageViewSeletor));
@@ -713,50 +662,50 @@ linear_pdf.setVisibility(View.GONE);
     String docId = "";
 
     public void Response_uploadDoc(Uploaddocumentserver body) {
-       if(body!=null) {
+        if(body!=null) {
 
 
-           progressDialog.dismiss();
+            progressDialog.dismiss();
 
-           String response = "";
-           String imageUrl = "";
-           try {
-               response = body.getStatus();
+            String response = "";
+            String imageUrl = "";
+            try {
+                response = body.getStatus();
 
-           } catch (NullPointerException ignored) {
+            } catch (NullPointerException ignored) {
 
-           }
-           if (response.equals("success")) {
-               if (imageViewSeletor == 1) {
-                   tv_hint1.setVisibility(View.GONE);
-                   tv_uploaded1.setVisibility(View.VISIBLE);
-                   iv_delete1.setVisibility(View.GONE);
-                   iv_pan.setEnabled(false);
-
-
-               } else {
-                   tv_hint1.setVisibility(View.GONE);
-                   tv_uploaded2.setVisibility(View.VISIBLE);
-                   iv_delete2.setVisibility(View.GONE);
-                   iv_secondDoc.setEnabled(false);
-                   iv_delete2.setEnabled(false);
+            }
+            if (response.equals("success")) {
+                if (imageViewSeletor == 1) {
+                    tv_hint1.setVisibility(View.GONE);
+                    tv_uploaded1.setVisibility(View.VISIBLE);
+                    iv_delete1.setVisibility(View.GONE);
+                    iv_pan.setEnabled(false);
 
 
-               }
-
-           } else {
-               tv_uploaded1.setVisibility(View.GONE);
-               iv_delete1.setVisibility(View.GONE);
-               iv_pan.setEnabled(true);
-               tv_uploaded2.setVisibility(View.GONE);
-               iv_delete2.setVisibility(View.GONE);
-               iv_secondDoc.setEnabled(false);
+                } else {
+                    tv_hint1.setVisibility(View.GONE);
+                    tv_uploaded2.setVisibility(View.VISIBLE);
+                    iv_delete2.setVisibility(View.GONE);
+                    iv_secondDoc.setEnabled(false);
+                    iv_delete2.setEnabled(false);
 
 
-           }
-       }
-       else {
-           progressDialog.dismiss();
-       }
+                }
+
+            } else {
+                tv_uploaded1.setVisibility(View.GONE);
+                iv_delete1.setVisibility(View.GONE);
+                iv_pan.setEnabled(true);
+                tv_uploaded2.setVisibility(View.GONE);
+                iv_delete2.setVisibility(View.GONE);
+                iv_secondDoc.setEnabled(false);
+
+
+            }
+        }
+        else {
+            progressDialog.dismiss();
+        }
     }
 }

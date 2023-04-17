@@ -88,7 +88,8 @@ public class ClosedFragment extends Fragment {
         rv_order.setLayoutManager(eLayoutManager);
         datumList=new ArrayList<>();
         getInvoiceData(page1);
-        rv_order.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+       rv_order.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -138,7 +139,7 @@ public class ClosedFragment extends Fragment {
         ApiService api = UserMoreDetailActivity.RetroClient.getApiService();
         CommonSharedPreference commonSharedPreference=new CommonSharedPreference(getActivity());
         String token = "Bearer " + commonSharedPreference.getToken();
-        Call<AcceptedOrderModel> call = api.getMyBills(token,String.valueOf(page));
+        Call<AcceptedOrderModel> call = api.getMyBills(token,String.valueOf(page),"8");
         call.enqueue(new Callback<AcceptedOrderModel>() {
             @Override
             public void onResponse(Call<AcceptedOrderModel> call, Response<AcceptedOrderModel> response) {

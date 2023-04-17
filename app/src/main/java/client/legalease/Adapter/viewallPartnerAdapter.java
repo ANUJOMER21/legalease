@@ -20,6 +20,7 @@ import java.util.List;
 
 import client.legalease.APIConstant.ApiConstant;
 import client.legalease.HomeActivity;
+import client.legalease.Model.NewPartnerModel.Assoicate;
 import client.legalease.Model.PartnerModel.Datum;
 import client.legalease.PartnerDetail;
 import client.legalease.R;
@@ -29,9 +30,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class viewallPartnerAdapter extends RecyclerView.Adapter<viewallPartnerAdapter.ViewHolder> {
     Context context;
-    List<Datum> list;
+    List<Assoicate> list;
 String servicename;
-    public viewallPartnerAdapter(Context context, List<Datum> list,String servicename) {
+    public viewallPartnerAdapter(Context context, List<Assoicate> list,String servicename) {
         this.context = context;
         this.list = list;
         this.servicename=servicename;
