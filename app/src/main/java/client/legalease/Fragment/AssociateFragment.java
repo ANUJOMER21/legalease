@@ -1,18 +1,15 @@
 package client.legalease.Fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,25 +17,18 @@ import java.util.List;
 
 import client.legalease.Adapter.MeetingAdapter;
 import client.legalease.Adapter.ReachUsAdapter;
-import client.legalease.Adapter.viewallPartnerAdapter;
-import client.legalease.Common.CustomLinearLayoutManager;
 import client.legalease.HomeActivity;
 
-import client.legalease.Model.PartnerModel.Datum;
-import client.legalease.Model.PartnerModel.Partnermodel;
 import client.legalease.Model.ReachUsModel.ReachUsData;
-import client.legalease.Model.ReachUsModel.ReachUsModel;
+import client.legalease.Model.meetingmodel.Datum;
 import client.legalease.Model.meetingmodel.Meetingmodel;
 import client.legalease.Preference.CommonSharedPreference;
 import client.legalease.R;
 import client.legalease.RetrofitClient.RetrofitClient;
-import client.legalease.ViewAllPartner;
 import client.legalease.WebServices.ApiService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static client.legalease.APIConstant.ApiConstant.IMAGEURL;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -65,7 +55,7 @@ public class AssociateFragment extends Fragment {
     ReachUsAdapter reachUsAdapter;
     RecyclerView rv_associate;
 
-
+    TextView error;
     int page=1;
     int lastpage=1;
     @Nullable
@@ -74,10 +64,10 @@ public class AssociateFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_associate, container, false);
         HomeActivity activity = (HomeActivity) getActivity();
         rv_associate=(RecyclerView)rootView.findViewById(R.id.rv_viewallpartner);
-        datumList = new ArrayList<>();
+        datumList = new ArrayList<client.legalease.Model.meetingmodel.Datum>();
         LinearLayoutManager manager=new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         rv_associate.setLayoutManager(manager);
-
+     error=(TextView)rootView.findViewById(R.id.errortxt);
         progressBar = (ProgressBar)rootView.findViewById(R.id.progressBar_viewall);
 commonSharedPreference=new CommonSharedPreference(getContext());
 
@@ -101,7 +91,7 @@ commonSharedPreference=new CommonSharedPreference(getContext());
                    if(lastpage!=1){
                        if(isscrolling&& lastpage>page){
                            try {
-                               getallpartner(page++);
+                               getallpartner(++page);
                            } catch (IOException e) {
                                throw new RuntimeException(e);
                            }
@@ -113,7 +103,7 @@ commonSharedPreference=new CommonSharedPreference(getContext());
         return rootView;
     }
     private void getallpartner(final int page) throws IOException{
-        Log.d("data1", "getallpartner: ");
+        Log.d("data1", "getallpartner: "+page+" last page "+lastpage);
         CommonSharedPreference commonSharedPreference = new CommonSharedPreference(getContext());
        String token = "Bearer " + commonSharedPreference.getToken();
         //String token="Bearer "+"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3Byb2Zlc3Npb25hbHNhYXRoaS5jb20vYXBpL3YxL3BhcnRuZXJMb2dpbiIsImlhdCI6MTY3OTIxMjUwMiwiZXhwIjoxNjk0OTgwNTAyLCJuYmYiOjE2NzkyMTI1MDIsImp0aSI6Ijg3bHh1aTlqWTVHbDljSHoiLCJzdWIiOjEzMjYsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.cWo2VJgx0slo0FrxZxpv5c_wiFaPRmL2g_eibz6ecR8";
@@ -122,14 +112,31 @@ commonSharedPreference=new CommonSharedPreference(getContext());
      call.enqueue(new Callback<Meetingmodel>() {
          @Override
          public void onResponse(Call<Meetingmodel> call, Response<Meetingmodel> response) {
-             Log.d("data", "onResponse: "+response.body().toString());
+             Log.d("data", "onResponse: "+response.body().getMeetinglist().getData().size());
              if(response.body().getStatus().equals("success")){
-                 progressBar.setVisibility(View.GONE);
-                 if(response.body().getMeetinglist().getData()!=null){
-                     MeetingAdapter meetingAdapter =new MeetingAdapter(getContext(),response.body().getMeetinglist().getData());
-                     rv_associate.setAdapter(meetingAdapter);
+                    lastpage=response.body().getMeetinglist().getLastPage();
+                 if(response.body().getMeetinglist().getData().size()!=0){
+                     List<client.legalease.Model.meetingmodel.Datum> list=new ArrayList<>();
+                     for(client.legalease.Model.meetingmodel.Datum d :response.body().getMeetinglist().getData())
+                     {
+                         list.add(d);
                      }
+                     datumList.addAll(list);
+
+                     MeetingAdapter meetingAdapter =new MeetingAdapter(getContext(),datumList);
+                     meetingAdapter.notifyDataSetChanged();
+                     rv_associate.setAdapter(meetingAdapter);
+                     progressBar.setVisibility(View.GONE);
+                     }
+                 else {
+                     progressBar.setVisibility(View.GONE);
+                     error.setVisibility(View.VISIBLE);
                  }
+                 }
+             else{
+               //  Toast.makeText(getActivity(), "No Meeting is Schedule", Toast.LENGTH_SHORT).show();
+                 error.setVisibility(View.VISIBLE);
+             }
 
              }
 

@@ -42,7 +42,7 @@ public class RejectedServiceFragment extends Fragment {
     ProgressBar progressBar;
     int totalsize=0,size=0;
     Button previous, next;
-    TextView pagenumber;
+    TextView pagenumber,error;
     List<Datum3> datum3List;
     boolean isscorolling=false;
     int page = 1;
@@ -149,9 +149,14 @@ private LinearLayout ll1;
             @Override
             public void onResponse(Call<ServiceOffermodel> call, Response<ServiceOffermodel> response) {
                 if(response.body()==null){
-                    Toast.makeText(getContext(), "null", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                   // Toast.makeText(getContext(), "No Offer is Rejected", Toast.LENGTH_SHORT).show();
+
+                    progressBar.setVisibility(View.GONE);
+
+                } else if (response.body().getOfferList().getData().size()==0&&p.equals("1")) {
+                    progressBar.setVisibility(View.GONE);
+              //      error.setVisibility(View.VISIBLE);
+                } else {
                     lastpage=response.body().getOfferList().getLastPage();
                     progressBar.setVisibility(View.GONE);
              //       datum3List.addAll(response.body().getOfferList().getData());
@@ -188,11 +193,13 @@ private LinearLayout ll1;
 
 
     private void initview(View view) {
+
         rv_acceptedOrder=view.findViewById(R.id.rv_service_offer);
         progressBar=view.findViewById(R.id.progressBar_service_rorder);
         next=view.findViewById(R.id.nextspage);
         previous=view.findViewById(R.id.previouspage);
         pagenumber=view.findViewById(R.id.pagenum2);
         ll1=view.findViewById(R.id.ll1);
+        error=view.findViewById(R.id.errortxt);
     }
 }

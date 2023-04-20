@@ -1,8 +1,10 @@
 
-package client.legalease.Model.VERIFYOTP;
+package client.legalease.Model.CustomerInfo;
+
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 
 public class User {
 
@@ -18,12 +20,9 @@ public class User {
     @SerializedName("email")
     @Expose
     private String email;
-    @SerializedName("password")
-    @Expose
-    private Object password;
     @SerializedName("id_cms_privileges")
     @Expose
-    private String idCmsPrivileges;
+    private Object idCmsPrivileges;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -33,33 +32,30 @@ public class User {
     @SerializedName("status")
     @Expose
     private String status;
-    @SerializedName("remember_token")
-    @Expose
-    private Object rememberToken;
     @SerializedName("mobile")
     @Expose
     private String mobile;
     @SerializedName("country")
     @Expose
-    private String country;
+    private Integer country;
     @SerializedName("state")
     @Expose
-    private String state;
+    private Integer state;
     @SerializedName("city")
     @Expose
-    private Object city;
+    private String city;
     @SerializedName("pincode")
     @Expose
-    private Object pincode;
+    private String pincode;
     @SerializedName("address")
     @Expose
     private Object address;
     @SerializedName("qualification")
     @Expose
-    private Object qualification;
+    private String qualification;
     @SerializedName("company_name")
     @Expose
-    private Object companyName;
+    private String companyName;
     @SerializedName("gst_no")
     @Expose
     private String gstNo;
@@ -72,9 +68,15 @@ public class User {
     @SerializedName("referalcode")
     @Expose
     private String referalcode;
+    @SerializedName("refferby")
+    @Expose
+    private String refferby;
     @SerializedName("wallet")
     @Expose
-    private String wallet;
+    private Integer wallet;
+    @SerializedName("easymoney")
+    @Expose
+    private Integer easymoney;
     @SerializedName("dob")
     @Expose
     private String dob;
@@ -84,6 +86,30 @@ public class User {
     @SerializedName("industry")
     @Expose
     private Object industry;
+    @SerializedName("commission")
+    @Expose
+    private Integer commission;
+    @SerializedName("exp")
+    @Expose
+    private Integer exp;
+    @SerializedName("latitude")
+    @Expose
+    private String latitude;
+    @SerializedName("longitude")
+    @Expose
+    private String longitude;
+    @SerializedName("desination")
+    @Expose
+    private String desination;
+    @SerializedName("short_des")
+    @Expose
+    private Object shortDes;
+    @SerializedName("summary")
+    @Expose
+    private Object summary;
+    @SerializedName("slug")
+    @Expose
+    private String slug;
 
     public Integer getId() {
         return id;
@@ -117,19 +143,11 @@ public class User {
         this.email = email;
     }
 
-    public Object getPassword() {
-        return password;
-    }
-
-    public void setPassword(Object password) {
-        this.password = password;
-    }
-
-    public String getIdCmsPrivileges() {
+    public Object getIdCmsPrivileges() {
         return idCmsPrivileges;
     }
 
-    public void setIdCmsPrivileges(String idCmsPrivileges) {
+    public void setIdCmsPrivileges(Object idCmsPrivileges) {
         this.idCmsPrivileges = idCmsPrivileges;
     }
 
@@ -157,14 +175,6 @@ public class User {
         this.status = status;
     }
 
-    public Object getRememberToken() {
-        return rememberToken;
-    }
-
-    public void setRememberToken(Object rememberToken) {
-        this.rememberToken = rememberToken;
-    }
-
     public String getMobile() {
         return mobile;
     }
@@ -173,35 +183,35 @@ public class User {
         this.mobile = mobile;
     }
 
-    public String getCountry() {
+    public Integer getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(Integer country) {
         this.country = country;
     }
 
-    public String getState() {
+    public Integer getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(Integer state) {
         this.state = state;
     }
 
-    public Object getCity() {
+    public String getCity() {
         return city;
     }
 
-    public void setCity(Object city) {
+    public void setCity(String city) {
         this.city = city;
     }
 
-    public Object getPincode() {
+    public String getPincode() {
         return pincode;
     }
 
-    public void setPincode(Object pincode) {
+    public void setPincode(String pincode) {
         this.pincode = pincode;
     }
 
@@ -213,19 +223,19 @@ public class User {
         this.address = address;
     }
 
-    public Object getQualification() {
+    public String getQualification() {
         return qualification;
     }
 
-    public void setQualification(Object qualification) {
+    public void setQualification(String qualification) {
         this.qualification = qualification;
     }
 
-    public Object getCompanyName() {
+    public String getCompanyName() {
         return companyName;
     }
 
-    public void setCompanyName(Object companyName) {
+    public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
 
@@ -261,12 +271,28 @@ public class User {
         this.referalcode = referalcode;
     }
 
-    public String getWallet() {
+    public String getRefferby() {
+        return refferby;
+    }
+
+    public void setRefferby(String refferby) {
+        this.refferby = refferby;
+    }
+
+    public Integer getWallet() {
         return wallet;
     }
 
-    public void setWallet(String wallet) {
+    public void setWallet(Integer wallet) {
         this.wallet = wallet;
+    }
+
+    public Integer getEasymoney() {
+        return easymoney;
+    }
+
+    public void setEasymoney(Integer easymoney) {
+        this.easymoney = easymoney;
     }
 
     public String getDob() {
@@ -292,7 +318,69 @@ public class User {
     public void setIndustry(Object industry) {
         this.industry = industry;
     }
-public  String toString(){
-        return getName()+getPincode()+getCountry()+getEmail()+getMobile();
-}
+
+    public Integer getCommission() {
+        return commission;
+    }
+
+    public void setCommission(Integer commission) {
+        this.commission = commission;
+    }
+
+    public Integer getExp() {
+        return exp;
+    }
+
+    public void setExp(Integer exp) {
+        this.exp = exp;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getDesination() {
+        return desination;
+    }
+
+    public void setDesination(String desination) {
+        this.desination = desination;
+    }
+
+    public Object getShortDes() {
+        return shortDes;
+    }
+
+    public void setShortDes(Object shortDes) {
+        this.shortDes = shortDes;
+    }
+
+    public Object getSummary() {
+        return summary;
+    }
+
+    public void setSummary(Object summary) {
+        this.summary = summary;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
 }

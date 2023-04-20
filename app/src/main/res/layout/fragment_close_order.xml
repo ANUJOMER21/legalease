@@ -30,4 +30,15 @@
         android:layout_height="35dp"
         android:id="@+id/progressBar_close"
         android:layout_centerInParent="true"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Order is Close"
+        android:layout_centerInParent="true"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:id="@+id/errortxt"
+        android:visibility="gone"
+        />
 </RelativeLayout>

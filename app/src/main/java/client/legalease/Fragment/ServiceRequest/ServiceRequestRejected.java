@@ -7,12 +7,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.TestLooperManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ import retrofit2.Response;
 public class ServiceRequestRejected extends Fragment {
     ProgressBar progressBar;
     Boolean isscrolling=false;
+    TextView error;
     int page=1,lastpage=1;
     int totalsize=0,size=0;
 
@@ -116,6 +119,7 @@ public class ServiceRequestRejected extends Fragment {
     private void initView(View view) {
         progressBar=view.findViewById(R.id.progressBar_service_rorder);
         rv_serviceRequest=view.findViewById(R.id.rv_service_offer);
+        error=view.findViewById(R.id.errortxt);
 
     }
     private void getallrequest(int page1) {
@@ -164,10 +168,15 @@ public class ServiceRequestRejected extends Fragment {
             @Override
             public void onResponse(Call<CustomerRequestListmodel> call, Response<CustomerRequestListmodel> response) {
                 if(response.body()==null){
-                    Toast.makeText(getActivity(), "null", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getActivity(), "No Service Request is Rejected", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+
+
                     Log.d("service_request", "onResponse: "+response);
-                }
-                else {
+                } else if (response.body().getRequestlist().getData().size()==0&&page1!=1) {
+                    progressBar.setVisibility(View.GONE);
+             //       error.setVisibility(View.VISIBLE);
+                } else {
                     Log.d("service_request", "onResponserejected: "+response.body().getRequestlist());
                     progressBar.setVisibility(View.GONE);
 

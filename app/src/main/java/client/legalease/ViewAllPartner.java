@@ -22,8 +22,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -71,7 +73,7 @@ public class ViewAllPartner extends AppCompatActivity {
     RecyclerView rv_all_partner;
     ProgressBar progressBar;
     List<Assoicate> datumList;
-
+private LocationManager locationManager;
     TextView lattv, lontv;
     FusedLocationProviderClient mFusedLocationClient;
     int PERMISSION_ID = 44;
@@ -81,7 +83,7 @@ int lastpage=1;
 
     private String id, name, price, servicename, lat, lon;
 
-
+private TextView errortxt;
     private FusedLocationProviderClient fusedLocationClient;
 
     @Override
@@ -89,6 +91,7 @@ int lastpage=1;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all_partner);
         initview();
+        locationManager= (LocationManager) getSystemService(LOCATION_SERVICE);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +129,12 @@ int lastpage=1;
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 5, new LocationListener() {
+            @Override
+            public void onLocationChanged(@NonNull Location location) {
+                addpartner(String.valueOf(location.getLatitude()),String.valueOf(location.getLongitude()));
+            }
+        });
         fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
@@ -136,52 +145,12 @@ int lastpage=1;
                    lon= String.valueOf(location.getLongitude());
                     Log.d("startlocation", "______________________________________________________________________________");
                     Log.d("flclocation", "getallpartner: "+location.getLongitude()+"|"+location.getLatitude());
+               //     addpartner(lat,lon);
                 }
             }
         });
         Log.d("api1", "run");
 
-
-        CommonSharedPreference commonSharedPreference = new CommonSharedPreference(this);
-        Log.d("chplocation", "getallpartner: "+commonSharedPreference.getlon()+"|"+commonSharedPreference.getlat()+"| id "+id);
-        Log.d("endlocation", "______________________________________________________________________________");
-        String token = "Bearer " + commonSharedPreference.getToken();
-        Log.d("vaptoken", "getallpartner: " + token);
-        Call <PartnerModel2> call = RetrofitClient.getApiService().getAssociateList(String.valueOf(page),token,commonSharedPreference.getlat(),commonSharedPreference.getlon(),id);
-        Log.d("api url", "getallpartner: "+call.request().url());
-        call.enqueue(new Callback < PartnerModel2>() {
-            @Override
-            public void onResponse(Call < PartnerModel2 > call, Response < PartnerModel2 > response) {
-                if (response.body() == null) {
-                    Toast.makeText(ViewAllPartner.this, "null ", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    progressBar.setVisibility(View.GONE);
-                    Log.d("api2", "onResponse: " + response.body().getAssoicate().get(0).getAddress());
-                    try {
-
-                    } catch (NullPointerException ignore) {
-                    } catch (IndexOutOfBoundsException ignore) {
-                    }
-                    Long lp;
-                        datumList=response.body().getAssoicate();
-                 ///   pagenum.setText(response.body().getAssoicate().getCurrentPage().toString());
-                    Log.d("lastpage", "onResponse: " + lastpage);
-                 LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-                    //      GridLayoutManager manager=new GridLayoutManager(getApplicationContext(),2,GridLayoutManager.VERTICAL,false);
-                    rv_all_partner.setLayoutManager(manager);
-                    viewallPartnerAdapter viewallPartnerAdapter = new viewallPartnerAdapter(getApplicationContext(), datumList,servicename);
-                    rv_all_partner.setAdapter(viewallPartnerAdapter);
-                   viewallPartnerAdapter.notifyDataSetChanged();
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call < PartnerModel2 > call, Throwable throwable) {
-                Log.d("viewallassociate", "onFailure: " + throwable.toString());
-            }
-        });
 rv_all_partner.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), rv_all_partner, new RecyclerTouchListener.ClickListener() {
     @Override
     public void onClick(View view, int position) {
@@ -196,12 +165,68 @@ rv_all_partner.addOnItemTouchListener(new RecyclerTouchListener(getApplicationCo
     }
 
     private void initview() {
+        errortxt=findViewById(R.id.errortxt);
         back = findViewById(R.id.back);
         lattv=findViewById(R.id.lat);
         lontv=findViewById(R.id.lon);
         rv_all_partner = findViewById(R.id.rv_viewallpartner);
         progressBar = findViewById(R.id.progressBar_viewall);
 
+    }
+    public void addpartner(String lat,String lon){
+
+        CommonSharedPreference commonSharedPreference = new CommonSharedPreference(this);
+        Log.d("chplocation", "getallpartner: "
+                //+commonSharedPreference.getlon()+"|"+commonSharedPreference.getlat()+
+                +lon+"|"+lat+
+                "| id "+id);
+        Log.d("endlocation", "______________________________________________________________________________");
+        String token = "Bearer " + commonSharedPreference.getToken();
+        Log.d("vaptoken", "getallpartner: " + token);
+        Call <PartnerModel2> call = RetrofitClient.getApiService().getAssociateList(String.valueOf(page),token,
+              //  commonSharedPreference.getlat(),commonSharedPreference.getlon()
+                lat,lon
+                ,id);
+        Log.d("api url", "getallpartner: "+call.request().url());
+        call.enqueue(new Callback < PartnerModel2>() {
+            @Override
+            public void onResponse(Call < PartnerModel2 > call, Response < PartnerModel2 > response) {
+                if (response.body() == null) {
+                  errortxt.setVisibility(View.VISIBLE);
+                  progressBar.setVisibility(View.GONE);
+                    //  Toast.makeText(ViewAllPartner.this, "null ", Toast.LENGTH_SHORT).show();
+                }
+                if(response.body().getAssoicate().size()==0){
+                  progressBar.setVisibility(View.GONE);
+                    errortxt.setVisibility(View.VISIBLE);
+                }
+                else {
+                    progressBar.setVisibility(View.GONE);
+                    Log.d("api2", "onResponse: " + response.body().getAssoicate().get(0).getAddress());
+                    try {
+
+                    } catch (NullPointerException ignore) {
+                    } catch (IndexOutOfBoundsException ignore) {
+                    }
+                    Long lp;
+                    datumList=response.body().getAssoicate();
+                    ///   pagenum.setText(response.body().getAssoicate().getCurrentPage().toString());
+                    Log.d("lastpage", "onResponse: " + lastpage);
+                    LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+                    //      GridLayoutManager manager=new GridLayoutManager(getApplicationContext(),2,GridLayoutManager.VERTICAL,false);
+                    rv_all_partner.setLayoutManager(manager);
+                    viewallPartnerAdapter viewallPartnerAdapter = new viewallPartnerAdapter(getApplicationContext(), datumList,servicename);
+                    rv_all_partner.setAdapter(viewallPartnerAdapter);
+                    viewallPartnerAdapter.notifyDataSetChanged();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call < PartnerModel2 > call, Throwable throwable) {
+                Log.d("viewallassociate", "onFailure: " + throwable.toString());
+            }
+        });
     }
 
 

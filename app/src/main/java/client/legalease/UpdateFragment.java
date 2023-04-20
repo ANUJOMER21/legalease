@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import client.legalease.APIConstant.ApiConstant;
 import client.legalease.Preference.CommonSharedPreference;
 
 public class UpdateFragment extends Fragment {
@@ -48,7 +49,7 @@ public class UpdateFragment extends Fragment {
 
         WebSettings webSettings = web_view.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        web_view.loadUrl("http://legalease.in/blog");
+        web_view.loadUrl("https://professionalsaathi.com/blog");
 
         try {
 

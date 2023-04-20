@@ -55,7 +55,7 @@ public class ClosedFragment extends Fragment {
     CommonSharedPreference commonSharedPreference;
     String token  ="";
     String selector = "2";
-    TextView tv_noData;
+    TextView tv_noData,error;
 
 
     @Nullable
@@ -83,7 +83,7 @@ public class ClosedFragment extends Fragment {
         rv_order = (RecyclerView)rootView.findViewById(R.id.rv_order_close);
         progressBar = (ProgressBar)rootView.findViewById(R.id.progressBar_close);
         tv_noData = (TextView)rootView.findViewById(R.id.tv_noData);
-
+        error=(TextView) rootView.findViewById(R.id.errortxt);
         RecyclerView.LayoutManager eLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL, false);
         rv_order.setLayoutManager(eLayoutManager);
         datumList=new ArrayList<>();
@@ -145,9 +145,15 @@ public class ClosedFragment extends Fragment {
             public void onResponse(Call<AcceptedOrderModel> call, Response<AcceptedOrderModel> response) {
 
                 if (response.body() == null) {
-                    Toast.makeText(getActivity(), "null", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getActivity(), "No Order is Close", Toast.LENGTH_SHORT).show();
+
+                    progressBar.setVisibility(View.GONE);
                     Log.d("service_request", "onResponse: " + response);
-                } else {
+                }else if (response.body().getOrderslist().getData().size()==0&&page1==1){
+                  //  error.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                }
+                else {
                     Log.d("closefragment", "onResponse: "+page+"lastpage"+lastpage);
                     progressBar.setVisibility(View.GONE);
                     List<Datum> data = new ArrayList<>();

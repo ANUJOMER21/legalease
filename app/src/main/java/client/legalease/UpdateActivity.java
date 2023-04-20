@@ -35,6 +35,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -52,6 +53,7 @@ import client.legalease.APIConstant.ApiConstant;
 import client.legalease.Common.ImagePickerActivity;
 import client.legalease.Interface.IImageCompressTaskListener;
 import client.legalease.Model.ClientOrderModel;
+import client.legalease.Model.CustomerInfo.CustomerInfo;
 import client.legalease.Model.LoginModel.User;
 import client.legalease.Model.State;
 import client.legalease.Model.StateListModel.StateData;
@@ -155,11 +157,13 @@ List<StateData> statelist;
         statelist=new ArrayList<>();
         initializeView();
         setStatearray();
-        Log.d("state", "onCreate: "+statelist.size());
+      //  Log.d("state", "onCreate: "+statelist.size());
         commonSharedPreference = new CommonSharedPreference(this);
-
+        myToken=commonSharedPreference.getToken();
         try {
-            if (commonSharedPreference.getLoginSharedPref(getApplicationContext()).getToken() != null) {
+          /**  if (commonSharedPreference.getLoginSharedPref(getApplicationContext()).getToken() != null) {
+                Log.d("updateprofile1", "onCreate: run");
+                Log.d("updateprofile start", "onCreate: "+commonSharedPreference.getLoginSharedPref(getApplicationContext()));
                 myToken = commonSharedPreference.getLoginSharedPref(getApplicationContext()).getToken();
                 id = commonSharedPreference.getLoginSharedPref(getApplicationContext()).getId();
                 name = commonSharedPreference.getLoginSharedPref(getApplicationContext()).getName();
@@ -183,44 +187,60 @@ List<StateData> statelist;
                 et_mobile.setText(mobile);
                 et_pincode.setText(pincode);
                 et_city.setText(city);
-
+                etstate.setSelection(Integer.valueOf(state));
                 et_gst.setText(gst);
 
-                et_dob.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // the instance of our calendar.
-                        final Calendar c = Calendar.getInstance();
 
-                        // on below line we are getting
-                        // our day, month and year.
-                        int year = c.get(Calendar.YEAR);
-                        int month = c.get(Calendar.MONTH);
-                        int day = c.get(Calendar.DAY_OF_MONTH);
-                        DatePickerDialog datePickerDialog=new DatePickerDialog(UpdateActivity.this,
-                                new DatePickerDialog.OnDateSetListener() {
-                                    @Override
-                                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                                        et_dob.setText(dayOfMonth+"-"+(month+1)+"-"+year);
-
-                                    }
-                                },year,month,day);
-                        datePickerDialog.show();
-                    }
-                });
 
             }
+            else if (commonSharedPreference.getLoginsharedpref2(getApplicationContext())!=null){
+                Log.d("updateprofile2", "onCreate: run");
+                Gson gson=new Gson();
+                client.legalease.Model.VERIFYOTP.User user =  commonSharedPreference.getLoginsharedpref2(getApplicationContext());
+                finalImageValue = IMAGEURL+ user.getPhoto();
+                et_name.setText(user.getName());
+                et_dob.setText(user.getDob());
+                et_mobile.setText(user.getMobile());
+                et_pincode.setText( String.valueOf(user.getPincode()));
+                et_city.setText((CharSequence) user.getCity());
+etstate.setSelection(Integer.parseInt(user.getState()));
+                et_gst.setText(user.getGstNo());
+                Log.d("photo Rec", "onCreate: "+user.getPhoto());
 
+
+
+
+            }**/
+          setdata();
         }catch (NullPointerException ignored){
-
+            Log.d("updateprofile error", "onCreate: "+ignored);
         }catch (IndexOutOfBoundsException ignore){
-
+            Log.d("updateprofile error", "onCreate: "+ignore);
         }
+        et_dob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // the instance of our calendar.
+                final Calendar c = Calendar.getInstance();
+
+                // on below line we are getting
+                // our day, month and year.
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog=new DatePickerDialog(UpdateActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                et_dob.setText(dayOfMonth+"-"+(month+1)+"-"+year);
+
+                            }
+                        },year,month,day);
+                datePickerDialog.show();
+            }
+        });
         etstate.setOnItemSelectedListener(this);
-        if (finalImageValue.equals("")||finalImageValue.equals(null)){
-            Glide.with(getApplicationContext()).load(R.drawable.male) .apply(fitCenterTransform()).into(img_addImage);
-        }else
-            Glide.with(getApplicationContext()).load(finalImageValue) .apply(fitCenterTransform()).into(img_addImage);
+
 
 
               back.setOnClickListener(new View.OnClickListener() {
@@ -236,12 +256,7 @@ List<StateData> statelist;
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Uploading...");
 
-     /**   linear_addImageFromGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-
-        });**/
 
      linear_addImageFromGallery.setOnClickListener(new View.OnClickListener() {
          @Override
@@ -353,6 +368,17 @@ linear_addImageFromCamera.setOnClickListener(new View.OnClickListener() {
                 profile_country = "India";
                 profile_gst=et_gst.getText().toString().trim();
 
+                       String profileStatename= (String) etstate.getSelectedItem();
+                       int statepos=0;
+                for (StateData s:statelist
+                     ) {
+                    if(profileStatename.equals(s.getStateName())){
+                        statepos=s.getId();
+                        break;
+                    }
+
+                }
+                profile_state= String.valueOf(statepos);
                 Log.d("profile_state", "onClick: "+profile_state);
 
                 if (profile_name.equals("")) {
@@ -388,12 +414,7 @@ linear_addImageFromCamera.setOnClickListener(new View.OnClickListener() {
 
 
                 }
-                else if (profile_gst.equals("")) {
-                    et_gst.setError("Please Enter Gst No.");
-                    et_gst.requestFocus();
-
-
-                }else {
+               else {
 sendtodb(profile_name,profile_dob,profile_mobile,profile_pincode,profile_city,profile_state,profile_gst,myToken);
 
 
@@ -412,6 +433,54 @@ sendtodb(profile_name,profile_dob,profile_mobile,profile_pincode,profile_city,pr
 
     }
 
+    private void setdata() {
+        String token=commonSharedPreference.getToken();
+        Call<CustomerInfo> call=RetrofitClient.getApiService().getCustomer("Bearer "+token);
+        call.enqueue(new Callback<CustomerInfo>() {
+            @Override
+            public void onResponse(Call<CustomerInfo> call, Response<CustomerInfo> response) {
+                if(response.body().getStatus().equals("success"))
+                {
+                    client.legalease.Model.CustomerInfo.User user=response.body().getUser();
+                    et_name.setText(user.getName());
+                    Log.d("state ", "onResponse: "+user.getState());
+                    et_dob.setText(user.getDob());
+                    et_mobile.setText(user.getMobile());
+                      finalImageValue=user.getPhoto();
+                    et_pincode.setText(user.getPincode());
+                    et_city.setText(user.getCity());
+                    et_gst.setText(user.getGstNo());
+                    if (finalImageValue.equals("")||finalImageValue.equals(null)){
+                        Glide.with(getApplicationContext()).load(R.drawable.male) .apply(fitCenterTransform()).into(img_addImage);
+                    }
+                    else
+                        Glide.with(getApplicationContext()).load(finalImageValue) .apply(fitCenterTransform()).into(img_addImage);
+
+                int satepos=0;
+                int stateid=user.getState();
+                    for (int i = 0; i < statelist.size(); i++) {
+                        int countryid= Integer.parseInt(statelist.get(i).getCountryID());
+                        if(stateid==countryid){
+                            satepos=i;
+                            break;
+                        }
+                    }
+                    Log.d("satepos", "onResponse: "+user.getState());
+                    etstate.setSelection(user.getState()-1);
+
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CustomerInfo> call, Throwable t) {
+                Toast.makeText(UpdateActivity.this, "Please Check your Internet Connection ", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
     private void setStatearray() {
         Call<StateModel> stateCall=RetrofitClient.getApiService().getStateList();
         stateCall.enqueue(new Callback<StateModel>() {
@@ -427,7 +496,7 @@ sendtodb(profile_name,profile_dob,profile_mobile,profile_pincode,profile_city,pr
                         i++;
                     }
                     CommonSharedPreference commonSharedPreference1=new CommonSharedPreference(UpdateActivity.this);
-                    String stateid=commonSharedPreference1.getLoginSharedPref(UpdateActivity.this).getState();
+//                    String stateid=commonSharedPreference1.getLoginSharedPref(UpdateActivity.this).getState();
                     String statepos="";
                    for(int j=0;j<statelist.size();j++){
                        if(statelist.get(j).getCountryID().equals(state)){
@@ -440,8 +509,8 @@ sendtodb(profile_name,profile_dob,profile_mobile,profile_pincode,profile_city,pr
 
                     ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     etstate.setAdapter(ad);
-                    int stateposid=ad.getPosition(statepos);
-                    etstate.setSelection(stateposid);
+                  //  int stateposid=ad.getPosition(statepos);
+                  //  etstate.setSelection(stateposid);
                 }
             }
 
@@ -468,8 +537,7 @@ sendtodb(profile_name,profile_dob,profile_mobile,profile_pincode,profile_city,pr
    data.put("pincode",profile_pincode);
 //   data.put("mobile",profile_mobile);
    String token="Bearer "+myToken;
-        Userupdate userupdate=new Userupdate(profile_name,profile_dob,profile_state,"",profile_gst,profile_city,profile_pincode);
-
+        Log.d("ua token", "sendtodb: "+token);
    Call<Updateprofilemodel> call=RetrofitClient.getApiService().customerupdate(token,data);
     call.enqueue(new Callback<Updateprofilemodel>() {
         @Override
@@ -479,9 +547,11 @@ sendtodb(profile_name,profile_dob,profile_mobile,profile_pincode,profile_city,pr
             }
             else{
                 Toast.makeText(UpdateActivity.this, "Profile is updated", Toast.LENGTH_SHORT).show();
-                Userdetails userdetails=response.body().getUserdetails();
+              /**  Userdetails userdetails=response.body().getUserdetails();
                 client.legalease.Model.VERIFYOTP.User user=new client.legalease.Model.VERIFYOTP.User();
                 user.setName(userdetails.getName());
+                user.setId(userdetails.getId());
+                user.setToken(userdetails.getToken());
                 user.setPhoto(userdetails.getPhoto());
                 user.setEmail(userdetails.getEmail());
                 user.setMobile(userdetails.getMobile());
@@ -491,8 +561,10 @@ sendtodb(profile_name,profile_dob,profile_mobile,profile_pincode,profile_city,pr
                 user.setPincode(userdetails.getPincode());
                 user.setState(userdetails.getState().toString());
                 user.setGstNo(userdetails.getGstNo());
-                commonSharedPreference.setLoginSharedPref(getApplicationContext(),user);
-
+                Log.d("photo Rec", "onResponse: "+userdetails.getPhoto());
+            //    commonSharedPreference.setLoginSharedPref(getApplicationContext(),user);
+                Log.d("updateprofile", "onResponse: "+user);**/
+              setdata();
 
             }
         }

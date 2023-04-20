@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ import retrofit2.Response;
  */
 public class ServiceRequestActive extends Fragment {
     ProgressBar progressBar;
+    TextView error;
     Boolean isscrolling=false;
     int page=1,lastpage=1;
     int totalsize=0,size=0;
@@ -115,13 +117,13 @@ public class ServiceRequestActive extends Fragment {
     private void initView(View view) {
         progressBar=view.findViewById(R.id.progressBar_service_rorder);
         rv_serviceRequest=view.findViewById(R.id.rv_service_offer);
-
+error=view.findViewById(R.id.errortxt);
     }
     private void getallrequest(int page1) {
         CommonSharedPreference commonSharedPreference=new CommonSharedPreference(getActivity());
         String token = "Bearer " + commonSharedPreference.getToken();
         Log.d("page", "getallrequest: "+page1);
-        int client_id=commonSharedPreference.getLoginSharedPref(getContext()).getId();
+//        int client_id=commonSharedPreference.getLoginSharedPref(getContext()).getId();
 
         final String p=String.valueOf(page1);
         /** Call<ServiceRequestModel> call= RetrofitClient.getApiService().getServiceRequest(p,token,String.valueOf(client_id));
@@ -163,10 +165,13 @@ public class ServiceRequestActive extends Fragment {
             @Override
             public void onResponse(Call<CustomerRequestListmodel> call, Response<CustomerRequestListmodel> response) {
                 if(response.body()==null){
-                    Toast.makeText(getActivity(), "null", Toast.LENGTH_SHORT).show();
+                //   Toast.makeText(getActivity(), "No Service Request is Active", Toast.LENGTH_SHORT).show();
+
+                    progressBar.setVisibility(View.GONE);
                     Log.d("service_request", "onResponse: "+response);
-                }
-                else {
+                } else if (response.body().getRequestlist().getData().size()==0&&page1!=1) {
+                 //   error.setVisibility(View.VISIBLE);
+                } else {
                     Log.d("service_request", "onResponse: "+response.body().getRequestlist());
                     progressBar.setVisibility(View.GONE);
                     Log.d("ServiceRequest", "onResponse: "+page+"lastpage"+lastpage);

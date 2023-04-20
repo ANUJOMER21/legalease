@@ -52,7 +52,7 @@ public class AcceptedServiceFragment extends Fragment {
 RecyclerView rv_acceptedOrder;
 ProgressBar progressBar;
 Button previous,next;
-TextView pagenumber;
+TextView pagenumber,error;
 LinearLayout ll1;
     int page=1;
     int lastpage=1;
@@ -160,35 +160,40 @@ getservicelist("1,3,4,5",p,token);
             public void onResponse(Call<ServiceOffermodel> call, Response<ServiceOffermodel> response) {
                 Log.d("url", "onResponse: "+response.toString());
                 if(response.body()==null){
-                    Toast.makeText(getContext(), "null", Toast.LENGTH_SHORT).show();
-                }
-           /**     else {
-                    lastpage=response.body().getOfferList().getLastPage();
-
-
-                    datum3List1.addAll(response.body().getOfferList().getData());
-                    List<Datum3>rejectedorderlist=new ArrayList<>();
-                    for (Datum3 data:response.body().getOfferList().getData()
-                         ) {
-                        if(data.getStatus().equals("2"))
-                        {
-                            datum3List1.remove(data);
-                        }
-                    }
-                    size= datum3List1.size()+size;
-                    totalsize=response.body().getOfferList().getTotal();
+                //    Toast.makeText(getContext(), "No Offer is Accepted", Toast.LENGTH_SHORT).show();
 
                     progressBar.setVisibility(View.GONE);
-                    ServiceOfferAdapter serviceOfferAdapter = new ServiceOfferAdapter(getContext(),datum3List1, 0);
-                    rv_acceptedOrder.setAdapter(serviceOfferAdapter);
-                    serviceOfferAdapter.notifyDataSetChanged();
-                    rvstartpos=rvstartpos+response.body().getOfferList().getData().size();
+                } else if (response.body().getOfferList().getData().size()==0&&p.equals(1)) {
+                //    error.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                }
+                /**     else {
+                         lastpage=response.body().getOfferList().getLastPage();
+
+
+                         datum3List1.addAll(response.body().getOfferList().getData());
+                         List<Datum3>rejectedorderlist=new ArrayList<>();
+                         for (Datum3 data:response.body().getOfferList().getData()
+                              ) {
+                             if(data.getStatus().equals("2"))
+                             {
+                                 datum3List1.remove(data);
+                             }
+                         }
+                         size= datum3List1.size()+size;
+                         totalsize=response.body().getOfferList().getTotal();
+
+                         progressBar.setVisibility(View.GONE);
+                         ServiceOfferAdapter serviceOfferAdapter = new ServiceOfferAdapter(getContext(),datum3List1, 0);
+                         rv_acceptedOrder.setAdapter(serviceOfferAdapter);
+                         serviceOfferAdapter.notifyDataSetChanged();
+                         rvstartpos=rvstartpos+response.body().getOfferList().getData().size();
 
 
 
 
 
-                }**/
+                     }**/
                 else {
                     lastpage=response.body().getOfferList().getLastPage();
                     progressBar.setVisibility(View.GONE);
@@ -220,6 +225,7 @@ getservicelist("1,3,4,5",p,token);
 
 
     private void initview(View view) {
+        error=view.findViewById(R.id.errortxt);
         rv_acceptedOrder=view.findViewById(R.id.rv_service_offer);
         progressBar=view.findViewById(R.id.progressBar_service_rorder);
         next=view.findViewById(R.id.nextspage);

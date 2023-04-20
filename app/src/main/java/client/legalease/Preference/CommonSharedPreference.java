@@ -97,6 +97,14 @@ public String getProfilephoto(Context context){
         editor.commit();
 
     }
+    public User getLoginsharedpref2(Context context){
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String json = sharedPref.getString("LOGIN_PREF", null);
+        Gson gson=new Gson();
+        User user=gson.fromJson(json,User.class);
+        return user;
+    }
     public  void logiut(Context context){
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPref.edit();

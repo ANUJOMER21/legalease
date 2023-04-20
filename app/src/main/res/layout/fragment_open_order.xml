@@ -23,7 +23,17 @@
         android:layout_height="match_parent"
         android:id="@+id/rv_order"></androidx.recyclerview.widget.RecyclerView>
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Order is Open"
+        android:layout_centerInParent="true"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:id="@+id/errortxt"
+        android:visibility="gone"
+        />
     <ProgressBar
         android:layout_width="35dp"
         android:layout_height="35dp"

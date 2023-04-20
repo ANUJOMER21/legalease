@@ -8,6 +8,7 @@ public class ApiConstant {
     public static final String IMAGEURL = "https://professionalsaathi.com/";
     public static final String USERREGISTRATION = "register";
     public static final String GETSTATE = "getState";
+    public static final String CUSTOMERINFO="customerProfile";
     public static final String USERUPDATION = "updateUserinfo";
     public static final String GETQUALIFICATION = "qetQualification";
     public static final String LOGIN = "login";

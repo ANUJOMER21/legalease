@@ -12,6 +12,7 @@ import client.legalease.Model.Appslider.AppSliderModel;
 import client.legalease.Model.Bookmeetmodel;
 import client.legalease.Model.CheckCoupanModel.CheckCoupanModel;
 import client.legalease.Model.ClientOrderModel;
+import client.legalease.Model.CustomerInfo.CustomerInfo;
 import client.legalease.Model.DeleteDocModel.DeleteDocModel;
 import client.legalease.Model.FinalPaymentModel.FinalPaymentModel;
 import client.legalease.Model.InvoiceDetails.InvoiceData;
@@ -88,6 +89,7 @@ import static client.legalease.APIConstant.ApiConstant.CHANGEPASSWORDWITHTOKEN;
 import static client.legalease.APIConstant.ApiConstant.CHECKCOUPAN;
 import static client.legalease.APIConstant.ApiConstant.CLIENTORDERREQUEST;
 import static client.legalease.APIConstant.ApiConstant.CUSTOMERASSOCIATELIST;
+import static client.legalease.APIConstant.ApiConstant.CUSTOMERINFO;
 import static client.legalease.APIConstant.ApiConstant.CUSTOMERPROFILEINFOUPDATE;
 import static client.legalease.APIConstant.ApiConstant.CUSTOMERREQUESTLIST;
 import static client.legalease.APIConstant.ApiConstant.CUSTOMERREQUESTOFFERLIST;
@@ -165,6 +167,9 @@ public interface ApiService {
 
     @GET(GETSTATE)
     Call<StateModel> getStateList();
+@GET(CUSTOMERINFO)
+Call<CustomerInfo > getCustomer(@Header("Authorization") String token);
+
 
     @FormUrlEncoded
     @POST(USERUPDATION)

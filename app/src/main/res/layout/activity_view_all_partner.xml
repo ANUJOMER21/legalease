@@ -62,7 +62,17 @@
         android:layout_marginBottom="5dp"
         android:layout_below="@+id/relative">
     </androidx.recyclerview.widget.RecyclerView>
-
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="No Partner Available Nearby"
+    android:layout_centerInParent="true"
+    android:textSize="24sp"
+    android:textStyle="bold"
+    android:textColor="@color/black"
+    android:id="@+id/errortxt"
+    android:visibility="gone"
+    />
     <ProgressBar
         android:id="@+id/progressBar_viewall"
         android:layout_width="35dp"
