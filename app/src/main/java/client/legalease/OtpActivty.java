@@ -264,6 +264,8 @@ public class OtpActivty extends AppCompatActivity {
                 commonSharedPreference.setLoggedin(true);
                 commonSharedPreference.setLoginSharedPref(this, userdata);
                 commonSharedPreference.setProfilephoto(OtpActivty.this,IMAGEURL+userdata.getPhoto());
+                commonSharedPreference.setname(userdata.getName());
+                commonSharedPreference.setemail(userdata.getEmail());
                 Log.d("image", "Responce_otpVerification: "+userdata.getPhoto());
                 Intent intent = new Intent(OtpActivty.this,HomeActivity.class);
                 intent.putExtra("id",id);

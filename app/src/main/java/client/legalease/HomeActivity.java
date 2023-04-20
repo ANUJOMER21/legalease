@@ -179,7 +179,7 @@ public class HomeActivity extends AppCompatActivity
 
 
 
-        getLatLng();
+        //getLatLng();
         try {
             Intent intent = getIntent();
             fragChange = intent.getStringExtra("fragChange");
@@ -245,8 +245,11 @@ public class HomeActivity extends AppCompatActivity
         loggedInUserEmail = (TextView) header.findViewById(R.id.loggedInUserEmail);
 
         imageView = (de.hdodenhof.circleimageview.CircleImageView) header.findViewById(R.id.imageView);
+       String name= commonSharedPreference.getname();
         loggedInUserName.setText(name);
+        String email=commonSharedPreference.getemail();
         loggedInUserEmail.setText(email);
+
           finalImageValue=commonSharedPreference.getProfilephoto(HomeActivity.this);
         Log.d("profileimage", "onCreate: "+finalImageValue);
         if (finalImageValue.equals("") || finalImageValue.equals(null)) {
@@ -396,8 +399,8 @@ public class HomeActivity extends AppCompatActivity
               if (ActivityCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                   ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
               }else{
-                  locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                  locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+              //   locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+              //    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
                   fragment = new AssociateFragment();
 
               }

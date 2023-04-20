@@ -456,18 +456,12 @@ sendtodb(profile_name,profile_dob,profile_mobile,profile_pincode,profile_city,pr
                     else
                         Glide.with(getApplicationContext()).load(finalImageValue) .apply(fitCenterTransform()).into(img_addImage);
 
-                int satepos=0;
-                int stateid=user.getState();
-                    for (int i = 0; i < statelist.size(); i++) {
-                        int countryid= Integer.parseInt(statelist.get(i).getCountryID());
-                        if(stateid==countryid){
-                            satepos=i;
-                            break;
-                        }
-                    }
+
                     Log.d("satepos", "onResponse: "+user.getState());
                     etstate.setSelection(user.getState()-1);
 
+                  commonSharedPreference.setname(user.getName());
+                  commonSharedPreference.setemail(user.getEmail());
 
 
                 }

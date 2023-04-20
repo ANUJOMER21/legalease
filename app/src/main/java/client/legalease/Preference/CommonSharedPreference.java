@@ -113,4 +113,18 @@ public String getProfilephoto(Context context){
 
 
     }
+    public void setname(String name){
+        editor.putString("user_name",name);
+        editor.commit();
+    }
+    public void setemail(String email){
+        editor.putString("user_email",email);
+        editor.commit();
+    }
+    public String getname(){
+     return    prefs.getString("user_name","");
+    }
+    public String getemail(){
+        return    prefs.getString("user_email","");
+    }
 }

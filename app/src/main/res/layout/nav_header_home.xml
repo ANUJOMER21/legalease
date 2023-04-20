@@ -39,7 +39,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:layout_below="@+id/loggedInUserName"
+        android:layout_below="@id/loggedInUserName"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:id="@+id/loggedInUserEmail"

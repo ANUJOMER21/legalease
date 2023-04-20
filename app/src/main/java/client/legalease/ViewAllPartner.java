@@ -127,41 +127,44 @@ private TextView errortxt;
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            return;
+
+          return;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 5, new LocationListener() {
-            @Override
-            public void onLocationChanged(@NonNull Location location) {
-                addpartner(String.valueOf(location.getLatitude()),String.valueOf(location.getLongitude()));
-            }
-        });
-        fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
-                    CommonSharedPreference commonSharedPreference = new CommonSharedPreference(getApplicationContext());
-                    commonSharedPreference.setlocation(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
-                   lat= String.valueOf(location.getLatitude());
-                   lon= String.valueOf(location.getLongitude());
-                    Log.d("startlocation", "______________________________________________________________________________");
-                    Log.d("flclocation", "getallpartner: "+location.getLongitude()+"|"+location.getLatitude());
-               //     addpartner(lat,lon);
+        else {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 5, new LocationListener() {
+                @Override
+                public void onLocationChanged(@NonNull Location location) {
+                //    addpartner(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
                 }
-            }
-        });
-        Log.d("api1", "run");
+            });
+            fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location != null) {
+                        CommonSharedPreference commonSharedPreference = new CommonSharedPreference(getApplicationContext());
+                        commonSharedPreference.setlocation(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
+                        lat = String.valueOf(location.getLatitude());
+                        lon = String.valueOf(location.getLongitude());
+                        Log.d("startlocation", "______________________________________________________________________________");
+                        Log.d("flclocation", "getallpartner: " + location.getLongitude() + "|" + location.getLatitude());
+                             addpartner(lat,lon);
+                    }
+                }
+            });
+            Log.d("api1", "run");
 
-rv_all_partner.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), rv_all_partner, new RecyclerTouchListener.ClickListener() {
-    @Override
-    public void onClick(View view, int position) {
-        //finish();
-    }
+            rv_all_partner.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), rv_all_partner, new RecyclerTouchListener.ClickListener() {
+                @Override
+                public void onClick(View view, int position) {
+                    //finish();
+                }
 
-    @Override
-    public void onLongClick(View view, int position) {
+                @Override
+                public void onLongClick(View view, int position) {
 
-    }
-}));
+                }
+            }));
+        }
     }
 
     private void initview() {
