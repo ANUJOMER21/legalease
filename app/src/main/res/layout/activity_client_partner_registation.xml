@@ -43,7 +43,6 @@
 
 
 
-
     <androidx.cardview.widget.CardView
         app:cardCornerRadius="10dp"
         android:layout_marginRight="30dp"

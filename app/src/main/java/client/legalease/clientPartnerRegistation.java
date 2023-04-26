@@ -104,7 +104,7 @@ assid=i.getStringExtra("assid");
       if(message.getText().toString().isEmpty()){
           Toast.makeText(this, "Enter Some Message", Toast.LENGTH_SHORT).show();
       }
-      else {     submit.setVisibility(View.INVISIBLE);
+      else {
                   String token1="Bearer "+token;
           HashMap<String,String> hashMap=new HashMap<>();
           hashMap.put("associate_id",assid);
@@ -132,7 +132,7 @@ assid=i.getStringExtra("assid");
               @Override
               public void onFailure(Call<ClientOrderModel> call, Throwable t) {
                   Log.d("orderfail", "onFailure: "+t.toString());
-
+                  Toast.makeText(clientPartnerRegistation.this, "Please Check YOur Internet Connection", Toast.LENGTH_SHORT).show();
               }
           });
       }
